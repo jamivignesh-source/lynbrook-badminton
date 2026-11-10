@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Lynbrook Badminton | Firebase edition (preview)</title>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--navy:#001A4D;--red:#C8102E;--gold:#FFB81C;--bg:#F4F6F9;--card:#fff;--text:#1E293B;--muted:#64748B;--line:#E2E8F0;box-sizing:border-box}
+*,*::before,*::after{box-sizing:inherit;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font:16px/1.6 'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+main{flex:1}a{color:var(--navy)}.muted{color:var(--muted)}[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 1.25rem}.section{padding-top:2rem;padding-bottom:2rem}
+/* header */
+.site-header{background:var(--navy);position:sticky;top:env(safe-area-inset-top,0px);z-index:50;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.bar{display:flex;align-items:center;justify-content:space-between;min-height:64px;gap:1rem}
+.logo{color:#fff;font-weight:800;letter-spacing:.5px;text-decoration:none;font-size:1.2rem}.logo span{color:var(--gold)}
+nav{display:flex;gap:.25rem}
+nav a{color:#fff;text-decoration:none;padding:.5rem .9rem;border-radius:8px;font-weight:500}
+nav a:hover{background:rgba(255,255,255,.14)}nav a[aria-current=page]{background:var(--red)}
+.menu-btn{display:none;background:none;border:0;color:#fff;font-size:1.7rem;cursor:pointer;padding:.2rem .6rem}
+/* hero */
+.hero{background:linear-gradient(135deg,var(--navy),#000F2E);color:#fff;text-align:center;padding:7rem 1.25rem}
+.hero h1{font-size:clamp(2.3rem,7vw,4.2rem);line-height:1.15;margin-bottom:1rem}
+.hero p{max-width:560px;margin:0 auto 1.75rem;opacity:.9;font-size:1.15rem}
+.page-head{background:var(--navy);color:#fff;padding:2.2rem 0;border-bottom:4px solid var(--gold)}
+.page-head h1{font-size:2rem}.page-head p{opacity:.85}
+.btn{display:inline-block;border:2px solid transparent;border-radius:10px;padding:.65rem 1.4rem;font:inherit;font-weight:700;text-decoration:none;cursor:pointer;margin:.25rem;transition:filter .2s,transform .1s}
+.btn:hover{filter:brightness(1.1)}.btn:active{transform:scale(.97)}
+.btn-red{background:var(--red);color:#fff}.btn-ghost{border-color:#fff;color:#fff}.btn-navy{background:var(--navy);color:#fff}.btn-gold{background:var(--gold);color:var(--navy)}.btn-line{border-color:var(--navy);color:var(--navy);background:none}
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:1.25rem}
+.card{background:var(--card);border-radius:14px;padding:1.5rem;box-shadow:0 4px 10px rgba(0,32,91,.07)}
+.card h2,.card h3{color:var(--navy);margin-bottom:.5rem}
+.tag{display:inline-block;font-size:.78rem;font-weight:700;padding:.15rem .65rem;border-radius:99px;background:var(--navy);color:#fff;margin-bottom:.5rem}
+.session.open{border-top:5px solid var(--gold)}.session.practice{border-top:5px solid var(--red)}.session.open .tag{background:var(--gold);color:var(--navy)}
+
+
+
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+details.ann{border-bottom:1px solid var(--line);padding:.6rem 0}details.ann summary{cursor:pointer;font-weight:600}
+.new{background:var(--red);color:#fff;font-size:.7rem;padding:.1rem .5rem;border-radius:99px;margin-left:.4rem}
+/* filters + tables */
+.pills{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+.pill{border:2px solid var(--navy);background:#fff;color:var(--navy);border-radius:99px;padding:.4rem 1.1rem;font:inherit;font-weight:600;cursor:pointer}
+.pill[aria-pressed=true]{background:var(--navy);color:#fff}
+.tools{display:flex;flex-wrap:wrap;gap:.75rem;margin-bottom:1rem}
+input,select{font:inherit;padding:.6rem .8rem;border:2px solid var(--line);border-radius:10px;background:#fff;width:100%}
+input:focus,select:focus{border-color:var(--navy);outline:none}
+.tools input{flex:2;min-width:200px}.tools select{flex:1;min-width:140px;width:auto}
+.table-wrap{overflow-x:auto;background:#fff;border-radius:14px;box-shadow:0 4px 10px rgba(0,32,91,.07)}
+table{width:100%;border-collapse:collapse;min-width:520px}
+th,td{text-align:left;padding:.8rem 1rem;border-bottom:1px solid var(--line)}th{background:var(--navy);color:#fff}
+.badge{font-size:.78rem;font-weight:700;padding:.15rem .6rem;border-radius:99px}.home{background:#DCFCE7;color:#166534}.away{background:#FEE2E2;color:#991B1B}.past{opacity:.5}
+/* forms + checklist */
+label{display:block;font-weight:600;margin:.9rem 0 .3rem}
+.check{display:flex;gap:.8rem;align-items:flex-start;padding:.9rem 0;border-bottom:1px solid var(--line);cursor:pointer;margin:0;font-weight:500}
+.check input{width:22px;height:22px;accent-color:var(--red);margin-top:.15rem;flex:none}
+.check input:checked+span{text-decoration:line-through;color:var(--muted)}
+.bar-track{height:14px;background:var(--line);border-radius:99px;overflow:hidden;margin:.5rem 0}
+.bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .4s}
+.msg{margin-top:1rem;padding:.8rem 1rem;border-radius:10px;font-weight:600}.msg.ok{background:#DCFCE7;color:#166534}.msg.err{background:#FEE2E2;color:#991B1B}
+.stat{text-align:center}.stat b{display:block;font-size:2.2rem;color:var(--red);line-height:1.2}
+.bump{animation:bump .4s}@keyframes bump{50%{transform:scale(1.35)}}
+.avatar{width:72px;height:72px;border-radius:50%;background:var(--navy);color:var(--gold);display:grid;place-items:center;font-size:1.6rem;font-weight:800;margin-bottom:.75rem}
+.auth{max-width:440px;margin:0 auto}.tabs{display:flex;gap:.5rem;margin-bottom:.5rem}
+ul.clean{list-style:none}ul.clean li{padding:.5rem 0;border-bottom:1px solid var(--line)}
+#toast{position:fixed;bottom:1.5rem;left:50%;transform:translate(-50%,120px);background:var(--navy);color:#fff;padding:.8rem 1.4rem;border-radius:10px;transition:transform .3s;z-index:99}#toast.show{transform:translate(-50%,0)}
+footer{background:var(--navy);color:#fff;text-align:center;padding:1.75rem 1rem;margin-top:3rem}footer a{color:var(--gold)}
+@media(max-width:900px){.menu-btn{display:block}
+nav{display:none;position:absolute;top:64px;left:0;right:0;background:var(--navy);flex-direction:column;padding:.5rem 1rem 1rem}nav.open{display:flex}
+.two{grid-template-columns:1fr}.hero{padding:3rem 1.25rem}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+
+.btn-xl{font-size:1.15rem;padding:1rem 2.2rem}.btn-gold.btn-xl{box-shadow:0 8px 22px rgba(255,184,28,.45)}
+.card,.table-wrap{border-radius:18px}
+.card{transition:box-shadow .25s,transform .25s}.card:hover{box-shadow:0 14px 30px rgba(0,26,77,.2);transform:translateY(-3px)}
+
+
+.faq{max-width:700px;margin:0 auto 1.25rem;text-align:left}.faq h3{color:var(--gold);margin-bottom:.5rem}
+.faq details{border-bottom:1px solid rgba(255,255,255,.2);padding:.45rem 0}.faq summary{cursor:pointer;font-weight:600}.faq p{opacity:.85;margin-top:.3rem}
+.session.varsity{border-top:5px solid var(--red)}.session.jv{border-top:5px solid var(--navy)}.session.varsity .tag{background:var(--red)}
+
+.badge.st-present{background:#DCFCE7;color:#166534}.badge.st-excused{background:#FEF3C7;color:#92400E}.badge.st-unexcused{background:#FEE2E2;color:#991B1B}
+.inline{display:flex;gap:.5rem;align-items:center;font-weight:500;margin:.25rem 0 1rem}.inline input{width:auto}
+.mini{padding:.1rem .7rem;margin:0 0 0 .5rem}table select{padding:.35rem .5rem}.stack>.card,.stack>#panel>.card{margin-bottom:1.25rem}
+tr.lyn td{background:var(--navy);color:#fff;font-weight:600}tr.lyn td:first-child{box-shadow:inset 6px 0 0 var(--red)}
+.vik{background:var(--red);color:#fff;padding:.1rem .65rem;border-radius:99px}
+.legend{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;margin:1rem 0;font-size:.95rem}.swatch{display:inline-block;width:1.2rem;height:1.2rem;border-radius:4px;border:2px solid var(--line);vertical-align:middle;margin-right:.5rem;background:var(--card)}
+.swatch.lynb{background:var(--navy);border-color:var(--navy);box-shadow:inset 5px 0 0 var(--red)}
+.seg{display:flex;gap:.3rem;flex-wrap:wrap}.seg button{border:2px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:.25rem .65rem;font:inherit;font-size:.85rem;font-weight:600;cursor:pointer}
+.seg button[aria-pressed=true].st-present{background:#16A34A;border-color:#16A34A;color:#fff}.seg button[aria-pressed=true].st-excused{background:#D97706;border-color:#D97706;color:#fff}.seg button[aria-pressed=true].st-unexcused{background:var(--red);border-color:var(--red);color:#fff}
+table.matrix{min-width:780px;text-align:center}.matrix th,.matrix td{text-align:center;padding:.5rem .4rem;border:1px solid var(--line)}.matrix thead th:first-child{text-align:left}.matrix tbody th{background:var(--bg);color:var(--text);width:3.5rem}
+.matrix td.me{background:var(--gold);color:var(--navy);font-weight:700}.matrix select{width:100%;margin-bottom:.25rem;padding:.3rem;font-size:.85rem}.matrix select:last-child{margin-bottom:0}
+.me-card{border-left:6px solid var(--red);margin-top:1rem}.me-card p{margin:.4rem 0}
+table.log{min-width:760px}.log input[type=date]{width:auto;padding:.3rem .4rem;font-size:.85rem}.log select{width:auto}
+.tag.t-varsity{background:var(--red)}.tag.t-open{background:var(--gold);color:var(--navy)}
+textarea{font:inherit;padding:.6rem .8rem;border:2px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);width:100%;resize:vertical}textarea:focus{border-color:var(--navy);outline:none}
+.row{display:flex;gap:.4rem;align-items:center}.row input{flex:1}.row .mini{margin:0}.row button[disabled]{opacity:.35;cursor:default}
+.cal-bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin:1.75rem 0 .5rem}.cal-bar h3{margin:0;font-size:1.4rem}.cal-bar .mini{margin:0 0 0 .4rem;padding:.35rem .8rem}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(104px,1fr));min-width:730px}.cal-dow{background:var(--navy);color:#fff;font-weight:700;text-align:center;padding:.5rem 0}
+.cal-day{min-height:96px;border:1px solid var(--line);padding:.3rem;display:flex;flex-direction:column;gap:.25rem}.cal-day.off{background:var(--bg);opacity:.6}.cal-day.today{box-shadow:inset 0 0 0 3px var(--gold)}
+.cal-num{font-weight:700;font-size:.85rem;color:var(--muted)}.cal-day.today .cal-num{color:var(--red)}
+.chip{display:block;font-size:.72rem;font-weight:700;line-height:1.25;padding:.15rem .4rem;border-radius:6px;color:#fff;overflow-wrap:anywhere}
+.chip.t-varsity{background:var(--red)}.chip.t-jv{background:#3B5BA9}.chip.t-open{background:var(--gold);color:var(--navy)}.chip.match{background:var(--navy);box-shadow:inset 4px 0 0 var(--red);padding-left:.6rem}.chip.chg{outline:2px solid var(--gold);outline-offset:1px}.chip.x{text-decoration:line-through;opacity:.6}
+#panel .card{margin-bottom:1.25rem}.tabs{flex-wrap:wrap}.subtabs{margin:0 0 1rem}
+
+/* --- v2: contrast fix, dark mode, Senior Night, password eye, status banner --- */
+.btn.btn-gold,a.btn-gold{background:var(--gold);color:#001A4D}
+.pw{position:relative;display:block}.pw input{padding-right:2.9rem}
+.eye{position:absolute;top:50%;right:.35rem;transform:translateY(-50%);display:grid;place-items:center;width:2.2rem;height:2.2rem;border:0;border-radius:8px;background:none;color:var(--muted);cursor:pointer}.eye:hover{color:var(--navy)}
+tr.lyn.senior td{background:var(--gold);color:var(--navy)}tr.lyn.senior td:first-child{box-shadow:inset 6px 0 0 var(--red)}
+.sn{display:inline-block;margin-top:.2rem;background:var(--navy);color:var(--gold);font-size:.75rem;font-weight:800;padding:.1rem .6rem;border-radius:99px}
+.chip.senior{background:var(--gold);color:var(--navy)}.swatch.senior{background:var(--gold);border-color:var(--gold);box-shadow:inset 5px 0 0 var(--red)}
+#app-banner{padding:.6rem 1rem;text-align:center;font-weight:600;background:#FEF3C7;color:#92400E}#app-banner.banner-err{background:#FEE2E2;color:#991B1B}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B1220;--card:#131C2E;--text:#E5EAF2;--muted:#94A3B8;--line:#25324A;color-scheme:dark}:root:not([data-theme="light"]) .card h2,:root:not([data-theme="light"]) .card h3{color:var(--gold)}:root:not([data-theme="light"]) a:not(.btn){color:var(--gold)}:root:not([data-theme="light"]) .pill{background:var(--card);color:#fff;border-color:#fff}:root:not([data-theme="light"]) .pill[aria-pressed=true]{background:var(--gold);color:var(--navy);border-color:var(--gold)}:root:not([data-theme="light"]) .btn-line{color:#fff;border-color:#fff}:root:not([data-theme="light"]) input,:root:not([data-theme="light"]) select,:root:not([data-theme="light"]) textarea{background:var(--card);color:var(--text)}:root:not([data-theme="light"]) .table-wrap{background:var(--card)}:root:not([data-theme="light"]) .matrix td.me{color:var(--navy)}:root:not([data-theme="light"]) .eye:hover{color:var(--gold)}}:root[data-theme="dark"]{--bg:#0B1220;--card:#131C2E;--text:#E5EAF2;--muted:#94A3B8;--line:#25324A;color-scheme:dark}:root[data-theme="dark"] .card h2,:root[data-theme="dark"] .card h3{color:var(--gold)}:root[data-theme="dark"] a:not(.btn){color:var(--gold)}:root[data-theme="dark"] .pill{background:var(--card);color:#fff;border-color:#fff}:root[data-theme="dark"] .pill[aria-pressed=true]{background:var(--gold);color:var(--navy);border-color:var(--gold)}:root[data-theme="dark"] .btn-line{color:#fff;border-color:#fff}:root[data-theme="dark"] input,:root[data-theme="dark"] select,:root[data-theme="dark"] textarea{background:var(--card);color:var(--text)}:root[data-theme="dark"] .table-wrap{background:var(--card)}:root[data-theme="dark"] .matrix td.me{color:var(--navy)}:root[data-theme="dark"] .eye:hover{color:var(--gold)}#view{flex:1;display:flex;flex-direction:column}html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px)}
+</style></head>
+<body><div id="site-header"></div><div id="view"></div><div id="site-footer"></div>
+<script>
+const { initializeApp, getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs, onSnapshot, query, where, writeBatch } = (() => {
+  const KEY = 'lhsb-preview-db'; let data = new Map(); try { data = new Map(Object.entries(JSON.parse(localStorage.getItem(KEY) || '{}'))); } catch {}
+  const L = new Set(), cl = o => JSON.parse(JSON.stringify(o)), isM = v => v && typeof v === 'object' && !Array.isArray(v);
+  const mg = (a, b) => { for (const [k, v] of Object.entries(b)) { if (isM(v) && isM(a[k])) mg(a[k], v); else a[k] = cl(v); } return a; };
+  const fire = () => { try { localStorage.setItem(KEY, JSON.stringify(Object.fromEntries(data))); } catch {} setTimeout(() => L.forEach(l => l.run()), 0); };
+  const ref = (c, id) => ({ type: 'document', col: c, id, path: c + '/' + id }), snap = (c, id) => ({ id, exists: () => data.has(c + '/' + id), data: () => cl(data.get(c + '/' + id)) });
+  const docs = (c, f = []) => [...data.keys()].filter(k => k.startsWith(c + '/')).map(k => snap(c, k.slice(c.length + 1))).filter(d => f.every(([x, , v]) => d.data()[x] === v));
+  const api = { initializeApp: () => ({}), getFirestore: () => ({}), collection: (_, c) => ({ type: 'collection', col: c }), doc: (_, c, id) => ref(c, id),
+    query: (c, ...f) => ({ type: 'query', col: c.col, filters: f }), where: (f, o, v) => [f, o, v], getDoc: async r => snap(r.col, r.id), getDocs: async c => ({ docs: docs(c.col, c.filters || []) }),
+    setDoc: async (r, d, o) => { data.set(r.path, o?.merge ? mg(data.has(r.path) ? cl(data.get(r.path)) : {}, d) : cl(d)); fire(); },
+    updateDoc: async (r, d) => { if (!data.has(r.path)) throw Object.assign(new Error('missing'), { code: 'not-found' }); const c = cl(data.get(r.path)); for (const [f, v] of Object.entries(d)) c[f] = cl(v); data.set(r.path, c); fire(); },
+    deleteDoc: async r => { data.delete(r.path); fire(); },
+    writeBatch: () => { const ops = []; return { set: (r, d, o) => ops.push(() => api.setDoc(r, d, o)), update: (r, d) => ops.push(() => api.updateDoc(r, d)), delete: r => ops.push(() => api.deleteDoc(r)), commit: async () => { for (const o of ops) await o(); } }; },
+    onSnapshot: (t, cb) => { const l = { run: () => t.type === 'document' ? cb({ id: t.id, exists: () => data.has(t.path), data: () => cl(data.get(t.path)) }) : cb({ docs: docs(t.col, t.filters || []) }) }; L.add(l); setTimeout(l.run, 0); return () => L.delete(l); } };
+  return api;
+})();
+let cur = 'home';
+/* =====================================================================
+   Lynbrook Badminton · Firebase Firestore edition (ES module)
+
+   Firestore layout
+     roster/{studentId}        { firstName, lastName, gender, division, grade }
+     users/{studentId}         { password (salted SHA-256 hash), role, studentId, style }
+     attendance/{date_session_studentId}
+                               { studentId, firstName, lastName, division, date,
+                                 sessionType, status, timestamp, by? }
+     lineups/{matchDate}       { date, V:{BS1:[ids]...}, J:{...}, names:{id:"First Last"} }
+     matches/{id}              { date, time, away, home }  or  { date, time, text }
+     overrides/{date_session}  { date, type, start, end, cancelled, note }
+     announcements/{id}        { title, body, order }
+     checklist/{id}            { label, order }
+     clearance/{studentId}     { done:{itemId:true}, donated }
+     config/init               { matches, announcements, checklist }  (seed flags)
+     config/admin              { salt, hash }                         (admin code)
+
+   How data flows: each page opens live onSnapshot listeners for just the
+   collections it needs, keeps the results in an in-memory cache, and redraws
+   when anything changes (so a check-in on a phone shows up on the coach's
+   laptop right away). Writes go straight to Firestore.
+
+   Only per-device things stay in the browser: who is logged in on this
+   device, the admin unlock for this tab, which admin tab is open, and which
+   announcements this device has read.
+   ===================================================================== */
+
+
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyAT6MwQqksqZz1hAMUx3ugiGTsx9IOxW5U',
+  authDomain: 'lynbrook-badminton.firebaseapp.com',
+  projectId: 'lynbrook-badminton',
+  storageBucket: 'lynbrook-badminton.firebasestorage.app',
+  messagingSenderId: '300479637993',
+  appId: '1:300479637993:web:0325a3d80f47b1cf7a8378',
+  measurementId: 'G-5PH401CSLM'
+};
+const db = getFirestore(initializeApp(firebaseConfig));
+
+/* ---------- small helpers ---------- */
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const keep = area => ({ // per-device storage (session + UI preferences only, never shared data)
+  get(k, d) { try { const v = area.getItem('lhsb:' + k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { area.setItem('lhsb:' + k, JSON.stringify(v)); } catch {} },
+  del(k) { try { area.removeItem('lhsb:' + k); } catch {} }
+});
+const local = keep(localStorage), sess = keep(sessionStorage);
+const iso = d => new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+const today = () => iso(new Date());
+const addDays = (s, n) => { const d = new Date(s + 'T00:00'); d.setDate(d.getDate() + n); return iso(d); };
+const dayOf = s => new Date(s + 'T00:00').getDay();
+const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], DOW_FULL = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const fmt = s => new Date(s + 'T00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+const shortD = s => +s.slice(5, 7) + '/' + +s.slice(8);
+const fmtT = t => { if (!t) return ''; const [h, m] = t.split(':').map(Number); return ((h % 12) || 12) + ':' + String(m).padStart(2, '0') + ' ' + (h < 12 ? 'AM' : 'PM'); };
+const TYPES = ['varsity', 'jv', 'open'];
+const TYPE = { varsity: 'Varsity Practice', jv: 'JV Practice', open: 'Saturday Open Gym' };
+const STATUS = { present: 'Present', excused: 'Excused Absent', unexcused: 'Unexcused Absent' };
+const SHORT = { present: 'Present', excused: 'Excused', unexcused: 'Unexcused' };
+const st = r => r.status || 'present';
+const badge = r => `<span class="badge st-${st(r)}">${STATUS[st(r)]}</span>`;
+const normId = s => String(s ?? '').trim().toLowerCase(); // student IDs are stored lower-case and are used as Firestore document IDs
+const sameId = (a, b) => normId(a) === normId(b);
+const fullName = p => `${p.first || ''} ${p.last || ''}`.trim();
+const sha256 = async s => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)))].map(b => b.toString(16).padStart(2, '0')).join('');
+const hashPw = (id, pw) => sha256(`lhsb|${normId(id)}|${pw}`);
+
+/* ---------- data you may want to edit ---------- */
+const DONATE_URL = ''; // paste your team donation link (Venmo, PayPal, booster club page...) to show a Donate button
+const PAGES = [['#home','Home'],['#schedule','Schedule'],['#attendance','Check-In'],['#portal','Portal'],['#admin','Admin']];
+// Default weekly schedule. Day numbers: 0 = Sun ... 6 = Sat; 24-hour times. Only Saturday Open Gym is scheduled by default.
+// Varsity and JV practices appear only when a coach adds them in the Admin page (their times just pre-fill the form).
+const DEFAULT_TIMES = { varsity: ['16:00', '18:00'], jv: ['18:00', '20:00'], open: ['17:00', '20:00'] };
+const DEFAULT_DAYS = { varsity: [], jv: [], open: [6] };
+// Line-up sheet: event code -> [label, players per slot, gender for each player]. POS = ranks per event (1-3 only).
+const LINE = { BS:['Boys Singles',1,['Male']], GS:['Girls Singles',1,['Female']], BD:['Boys Doubles',2,['Male','Male']], GD:['Girls Doubles',2,['Female','Female']], MXD:['Mixed Doubles',2,['Male','Female']] };
+const POS = 3, BLOCKS = { V:'Varsity', J:'JV' };
+const code = (b, n) => (b === 'V' ? 'V' : 'JV') + n;
+// Official SCVAL De Anza Division badminton schedule, 2026-27 (posted 7/21/26). Format: AWAY@HOME
+const DEFAULT_MATCH_TIME = '5:00 PM';
+const TEAMS = { C:'Cupertino', G:'Gunn', H:'Homestead', L:'Lynbrook', M:'Milpitas', V:'Monta Vista', P:'Palo Alto', W:'Wilcox' };
+const DAYS = {
+  '2027-03-02':'V@G P@W',          '2027-03-04':'C@W P@V M@G L@H', '2027-03-09':'V@C W@M H@P G@L',
+  '2027-03-11':'C@M V@H L@W P@G',  '2027-03-16':'H@C M@L G@V W@P', '2027-03-18':'C@L H@G P@M V@W',
+  '2027-03-23':'G@C L@P W@H M@V',  '2027-03-25':'C@P G@W V@L H@M', '2027-03-30':'W@C V@P G@M H@L',
+  '2027-04-01':'C@V M@W P@H L@G',  '2027-04-06':'C@H L@M',         '2027-04-08':'M@C H@V W@L',
+  '2027-04-15':'G@P',              '2027-04-20':'L@C G@H M@P W@V', '2027-04-22':'C@G P@L H@W V@M',
+  '2027-04-27':'P@C W@G L@V M@H'
+};
+const EVENTS = [
+  { date:'2027-04-29', time:'1:00 PM', text:'League play @ Fremont' },
+  { date:'2027-04-30', time:'1:00 PM', text:'League play @ Fremont' },
+  { date:'2027-05-01', time:'9:00 AM', text:'League Finals @ Fremont' }
+];
+// Used until a coach first edits the matches in Admin (then the list lives in Firestore).
+const DEFAULT_MATCHES = [
+  ...Object.entries(DAYS).flatMap(([date, s]) => s.split(' ').map(x => { const [a, h] = x.split('@'); return { date, time: DEFAULT_MATCH_TIME, away: TEAMS[a], home: TEAMS[h] }; })),
+  ...EVENTS
+].sort((a, b) => a.date.localeCompare(b.date)).map((m, i) => ({ id: 'm' + i, ...m }));
+const isLyn = m => m.away === 'Lynbrook' || m.home === 'Lynbrook';
+const opp = m => m.home === 'Lynbrook' ? m.away : m.home;
+const CLEAR = [ // starting checklist (editable in Admin)
+  { id:'online', label:'Complete Athletic Clearance online' },
+  { id:'physical', label:'Upload doctor’s physical form' },
+  { id:'gear', label:'Racket, non-marking shoes & water bottle' }
+];
+const ANN = [ // starting announcements (editable in Admin)
+  { id:'a1', t:'Athletic clearance comes first', b:'You can’t join team practice until your online clearance and physical form are approved.' },
+  { id:'a2', t:'Open Gym shoe rule', b:'Non-marking indoor shoes are required for entry.' },
+  { id:'a4', t:'No team fees', b:'There are no required dues. Optional donations help cover shuttlecocks and equipment.' }
+];
+const SAMPLE = [ // Admin > Roster > "Load sample players (testing)". Delete these before real use.
+  ['100001','Aarav','Patel','Male','Varsity','12'],['100002','Maya','Chen','Female','Varsity','11'],['100003','Ethan','Wu','Male','Varsity','12'],['100004','Rohan','Iyer','Male','Varsity','11'],
+  ['100005','Kevin','Tran','Male','Varsity','10'],['100006','Lily','Zhang','Female','Varsity','12'],['100007','Sophia','Nguyen','Female','Varsity','10'],['100008','Emma','Kim','Female','Varsity','11'],
+  ['100009','Daniel','Park','Male','JV','10'],['100010','Jason','Lin','Male','JV','9'],['100011','Priya','Shah','Female','JV','10'],['100012','Chloe','Wang','Female','JV','9'],
+  ['100013','Nikhil','Rao','Male','JV','9'],['100014','Andrew','Ho','Male','JV','10'],['100015','Grace','Liu','Female','JV','9'],['100016','Isabella','Cho','Female','JV','10']
+].map(([id, first, last, gender, division, grade]) => ({ id, first, last, gender, division, grade }));
+
+/* ---------- Firestore layer: live cache ---------- */
+const cache = {}, subs = {}, updaters = new Set();
+const dbMsg = e => e?.code === 'permission-denied' ? 'The database refused this request. Check your Firestore rules (see README).' : 'Can’t reach the database. Check your connection and try again.';
+function banner(msg, kind = 'info') {
+  let b = $('#app-banner');
+  if (!msg) { if (b && !b.classList.contains('banner-err')) b.remove(); return; }
+  if (!b) { b = document.createElement('div'); b.id = 'app-banner'; b.setAttribute('role', 'status'); document.body.prepend(b); }
+  b.className = 'banner-' + kind; b.textContent = msg;
+}
+function notify() { clearTimeout(notify.t); notify.t = setTimeout(() => updaters.forEach(fn => { try { fn(); } catch (e) { console.error(e); } }), 25); }
+const live = fn => { updaters.add(fn); fn(); }; // run a draw function now and again whenever data changes
+function watch(key, target) { // live listener; resolves after the first snapshot
+  subs[key]?.(); delete cache[key];
+  return new Promise(resolve => {
+    let first = true;
+    subs[key] = onSnapshot(target, snap => {
+      cache[key] = target.type === 'document' ? new Map(snap.exists() ? [[snap.id, snap.data()]] : []) : new Map(snap.docs.map(d => [d.id, d.data()]));
+      if (first) { first = false; resolve(); } else notify();
+    }, err => { console.error(err); banner(dbMsg(err), 'err'); if (first) { first = false; resolve(); } });
+  });
+}
+const need = names => Promise.all(names.map(n => watch(n, n === 'init' ? doc(db, 'config', 'init') : collection(db, n))));
+const rows = name => [...(cache[name] || [])].map(([id, d]) => ({ id, ...d }));
+const save = p => Promise.resolve(p).catch(e => { console.error(e); toast(e?.code === 'permission-denied' ? 'The database rules blocked that change.' : 'Couldn’t save. Check your connection and try again.'); });
+
+/* ---------- domain accessors (read from the live cache) ---------- */
+const toPlayer = (id, d) => ({ id, first: d.firstName || '', last: d.lastName || '', gender: d.gender || '', division: d.division || '', grade: d.grade || '' });
+const playerCache = new Map();
+const roster = () => rows('roster').map(r => toPlayer(r.id, r));
+const player = id => { const k = normId(id), hit = cache.roster?.get(k); return hit ? toPlayer(k, hit) : playerCache.get(k) || null; };
+async function loadPlayer(id) { // one-document lookup (players never download the whole roster)
+  const k = normId(id); if (!k || /[^a-z0-9_-]/.test(k)) return null; const hit = player(k); if (hit) return hit;
+  try { const s = await getDoc(doc(db, 'roster', k)); if (s.exists()) { const p = toPlayer(k, s.data()); playerCache.set(k, p); return p; } } catch (e) { banner(dbMsg(e), 'err'); }
+  return null;
+}
+let curUser = null; // { id, role, style } for whoever is logged in on this device
+const me = () => curUser;
+async function loadUser(id) { try { const s = await getDoc(doc(db, 'users', normId(id))); return s.exists() ? { id: s.id, ...s.data() } : null; } catch (e) { banner(dbMsg(e), 'err'); return null; } }
+async function restoreSession() { const id = local.get('session', null); if (!id) return; curUser = await loadUser(id); if (!curUser) local.del('session'); }
+const nameOf = u => { const p = player(u.id); return p ? fullName(p) : String(u.id); };
+const firstOf = u => player(u.id)?.first || String(u.id);
+const byName = (a, b) => (a.last + ' ' + a.first).localeCompare(b.last + ' ' + b.first);
+
+const attId = (date, type, id) => `${date}_${type}_${normId(id)}`; // one document per player + date + session
+const attData = (p, date, type, status, by, ts) => ({ studentId: p.id, firstName: p.first, lastName: p.last, division: p.division, date, sessionType: type, status, timestamp: ts || Date.now(), ...(by ? { by } : {}) });
+const records = () => rows('attendance').map(r => ({ rid: r.id, id: r.studentId, first: r.firstName || '', last: r.lastName || '', div: r.division || '', date: r.date, type: r.sessionType, status: r.status, ts: r.timestamp || 0, by: r.by }));
+const lineupOf = date => cache.lineups?.get(date) || {};
+const nameFor = (date, id) => lineupOf(date).names?.[id] || (player(id) ? fullName(player(id)) : id);
+const initFlags = () => cache.init?.get('init') || {};
+const matches = () => (initFlags().matches ? rows('matches') : DEFAULT_MATCHES).slice().sort((a, b) => a.date.localeCompare(b.date));
+const announcements = () => initFlags().announcements ? rows('announcements').sort((a, b) => b.order - a.order).map(a => ({ id: a.id, t: a.title, b: a.body })) : ANN;
+const checklist = () => initFlags().checklist ? rows('checklist').sort((a, b) => a.order - b.order) : CLEAR.map((c, i) => ({ ...c, order: i + 1 }));
+const overrides = () => rows('overrides');
+const clearRec = id => cache.clearance?.get(normId(id)) || {};
+const clearOf = id => clearRec(id).done || {};
+const setClear = (id, item, v) => save(setDoc(doc(db, 'clearance', normId(id)), { done: { [item]: v } }, { merge: true }));
+const seniorId = (ms = matches()) => { const h = ms.filter(m => m.home === 'Lynbrook'); return h.length ? h[h.length - 1].id : null; }; // final home game
+const matchLabel = (m, sid = seniorId()) => `${opp(m)} – ${shortD(m.date)} (${m.home === 'Lynbrook' ? 'Home' : 'Away'})${m.id === sid ? ' · 🎓 Senior Night' : ''}`;
+async function ensureInit(name) { // first coach edit copies the built-in defaults into Firestore so they can be changed
+  if (initFlags()[name]) return;
+  const b = writeBatch(db);
+  if (name === 'matches') DEFAULT_MATCHES.forEach(({ id, ...m }) => b.set(doc(db, 'matches', id), m));
+  if (name === 'announcements') ANN.forEach((a, i) => b.set(doc(db, 'announcements', a.id), { title: a.t, body: a.b, order: ANN.length - i }));
+  if (name === 'checklist') CLEAR.forEach((c, i) => b.set(doc(db, 'checklist', c.id), { label: c.label, order: i + 1 }));
+  b.set(doc(db, 'config', 'init'), { [name]: true }, { merge: true });
+  await b.commit();
+  cache.init = new Map([['init', { ...initFlags(), [name]: true }]]);
+}
+const ready = async n => { try { await ensureInit(n); return true; } catch (e) { save(Promise.reject(e)); return false; } };
+
+/* ---------- practice schedule: defaults + per-date coach changes ---------- */
+const defTimes = (t, date) => DEFAULT_DAYS[t].includes(dayOf(date)) ? DEFAULT_TIMES[t] : null;
+function sessionsOn(date) {
+  const ov = overrides().filter(o => o.date === date);
+  return TYPES.flatMap(t => { const def = defTimes(t, date), o = ov.find(x => x.type === t);
+    if (!def && !o) return [];
+    const start = o ? o.start : def[0], end = o ? o.end : def[1];
+    return [{ type: t, date, start, end, note: o?.note || '', cancelled: !!o?.cancelled, changed: !!o && !!def && (!!o.cancelled || start !== def[0] || end !== def[1]) }]; })
+    .sort((a, b) => a.start.localeCompare(b.start));
+}
+const daysLabel = a => a.length === 1 ? DOW_FULL[a[0]] + 's' : a.length > 2 && a[a.length - 1] - a[0] === a.length - 1 ? DOW[a[0]] + '–' + DOW[a[a.length - 1]] : a.map(d => DOW[d]).join(', ');
+const sessionLine = (date, t) => { if (!date) return ''; const s = sessionsOn(date).find(x => x.type === t);
+  return !s ? `No ${TYPE[t]} is scheduled on this date.` : s.cancelled ? `${TYPE[t]} is cancelled on this date.` : `${TYPE[t]} · ${fmtT(s.start)} – ${fmtT(s.end)}${s.changed ? ' (time changed)' : ''}`; };
+
+/* ---------- shared UI ---------- */
+function toast(msg) {
+  let t = $('#toast');
+  if (!t) { t = document.createElement('div'); t.id = 'toast'; t.setAttribute('role', 'status'); document.body.append(t); }
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 2600);
+}
+const EYE = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYE_OFF = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+function eyes() { // adds a show/hide button to every password box on the page
+  $$('input[type=password]').forEach(inp => {
+    if (inp.parentElement.classList.contains('pw')) return;
+    const w = document.createElement('span'); w.className = 'pw'; inp.before(w); w.append(inp);
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'eye'; b.setAttribute('aria-label', 'Show password'); b.setAttribute('aria-pressed', 'false'); b.innerHTML = EYE;
+    b.onclick = () => { const show = inp.type === 'password'; inp.type = show ? 'text' : 'password'; b.innerHTML = show ? EYE_OFF : EYE; b.setAttribute('aria-label', show ? 'Hide password' : 'Show password'); b.setAttribute('aria-pressed', String(show)); };
+    w.append(b);
+  });
+}
+// show "First Last" under an ID box as the player types (looks up one roster document)
+function idLookup(input, note, firstEl, lastEl, extra) {
+  let seq = 0, timer;
+  const run = async () => { const v = normId(input.value), n = ++seq;
+    if (!v) { if (firstEl) firstEl.value = ''; if (lastEl) lastEl.value = ''; extra?.(null); note.textContent = ''; return null; }
+    note.textContent = 'Looking up…'; const p = await loadPlayer(v); if (n !== seq) return p;
+    if (firstEl) firstEl.value = p ? p.first : ''; if (lastEl) lastEl.value = p ? p.last : ''; extra?.(p);
+    note.textContent = p ? `✓ ${fullName(p)}` : 'No player with that ID. Check the number or ask your coach.'; return p; };
+  input.oninput = () => { clearTimeout(timer); timer = setTimeout(run, 250); };
+  return run;
+}
+function layout() {
+  const page = '#' + cur, u = me();
+  $('#site-header').innerHTML = `<header class="site-header"><div class="wrap bar">
+    <a class="logo" href="#home">🏸 LYNBROOK <span>BADMINTON</span></a>
+    <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav">☰</button>
+    <nav id="nav" aria-label="Main">${PAGES.map(([h, t]) =>
+      `<a href="${h}"${h === page ? ' aria-current="page"' : ''}>${h === '#portal' && u ? 'My Portal' : t}</a>`).join('')}</nav></div></header>`;
+  const btn = $('.menu-btn'), nav = $('#nav');
+  btn.onclick = () => btn.setAttribute('aria-expanded', nav.classList.toggle('open'));
+  nav.onclick = e => { if (e.target.closest('a')) { nav.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); } };
+  $('#site-footer').innerHTML = `<footer><div class="wrap"><div class="faq"><h3>FAQ &amp; Contact</h3>
+    <details><summary>Do I need experience for Open Gym?</summary><p>No. All skill levels are welcome.</p></details>
+    <details><summary>What shoes do I need?</summary><p>Non-marking indoor shoes are required.</p></details>
+    <details><summary>Are there team fees?</summary><p>No. Donations for shuttlecocks and equipment are optional.</p></details>
+    <details><summary>How do I check in?</summary><p>Open the Check-In page and enter your Student ID. Your details fill in automatically. Pick the session you attended and tap Check In. Your coach can fix any mistakes.</p></details>
+    <p style="margin-top:.8rem">Questions? Email <a href="mailto:badminton@example.com">badminton@example.com</a></p></div>
+    <p>&copy; Lynbrook Badminton Club · San Jose, CA</p><p>Follow us on <a href="#">Instagram</a> | Join our <a href="#">Discord</a></p></div></footer>`;
+}
+
+/* ---------- line-up helpers ---------- */
+function setSlot(date, b, k, j, val) {
+  const arr = [...((lineupOf(date)[b] || {})[k] || [])]; arr[j] = val; for (let i = 0; i < arr.length; i++) arr[i] = arr[i] || '';
+  if (arr[0] && arr[1] && sameId(arr[0], arr[1])) return false;
+  const p = val && player(val), patch = { date, [b]: { [k]: arr.every(x => !x) ? [] : arr } };
+  if (p) patch.names = { [p.id]: fullName(p) }; // names are stored with the line-up so players don't need roster access
+  save(setDoc(doc(db, 'lineups', date), patch, { merge: true })); return true;
+}
+function matrix(date, b, o = {}) {
+  const lu = lineupOf(date)[b] || {}, cats = Object.keys(LINE), dv = BLOCKS[b], ro = o.edit ? roster().sort(byName) : [];
+  // dropdown: players who fit the slot (division + gender) first, then everyone else
+  const opts = (sel, g) => { const mk = p => `<option value="${esc(p.id)}"${sameId(p.id, sel) ? ' selected' : ''}>${esc(fullName(p))}</option>`, fit = p => p.division === dv && p.gender === g;
+    const a = ro.filter(fit), z = ro.filter(p => !fit(p));
+    return '<option value="">—</option>' + (a.length ? `<optgroup label="${dv} ${g === 'Male' ? 'boys' : 'girls'}">${a.map(mk).join('')}</optgroup>` : '') + (z.length ? `<optgroup label="${a.length ? 'Other players' : 'All players'}">${z.map(mk).join('')}</optgroup>` : ''); };
+  let h = `<div class="table-wrap"><table class="matrix"><thead><tr><th>${dv}</th>${cats.map(c => `<th title="${LINE[c][0]}">${c}</th>`).join('')}</tr></thead><tbody>`;
+  for (let n = 1; n <= POS; n++) h += `<tr><th scope="row">${code(b, n)}</th>` + cats.map(c => { const k = c + n, raw = lu[k] || [], ids = raw.filter(Boolean);
+    const body = o.edit ? Array.from({ length: LINE[c][1] }, (_, j) => `<select data-k="${k}" data-j="${j}" aria-label="${dv} ${k} player ${j + 1}">${opts(raw[j], LINE[c][2][j])}</select>`).join('')
+      : ids.length ? esc(ids.map(i => nameFor(date, i)).join(' / ')) : '<span class="muted">—</span>';
+    return `<td class="${o.me && ids.some(i => sameId(i, o.me)) ? 'me' : ''}">${body}</td>`; }).join('') + '</tr>';
+  return h + '</tbody></table></div>';
+}
+function mySlots(date, id) {
+  const lu = lineupOf(date);
+  return Object.keys(BLOCKS).flatMap(b => Object.entries(lu[b] || {}).filter(([, ids]) => ids.some(i => sameId(i, id)))
+    .map(([k, ids]) => { const [, cat, n] = k.match(/^([A-Z]+)(\d+)$/); return { b, k, cat, n: +n, partner: ids.filter(i => i && !sameId(i, id)).map(i => nameFor(date, i)) }; }))
+    .filter(s => LINE[s.cat] && s.n <= POS).sort((x, y) => x.b.localeCompare(y.b) * -1 || x.n - y.n);
+}
+const hasLineup = date => { const lu = lineupOf(date); return Object.keys(BLOCKS).some(b => Object.values(lu[b] || {}).some(a => a.some(Boolean))); };
+
+/* ---------- home ---------- */
+async function home() {
+  await need(['matches', 'overrides', 'announcements', 'init']);
+  live(() => {
+    const t = today(), ms = matches(), sid = seniorId(ms), nm = ms.find(m => m.date >= t && isLyn(m)), nowT = new Date().toTimeString().slice(0, 5); let nd = null;
+    for (let i = 0; i < 30 && !nd; i++) { const d = addDays(t, i), ss = sessionsOn(d).filter(s => !s.cancelled && (i > 0 || s.end > nowT)); if (ss.length) nd = { d, ss }; }
+    $('#next').innerHTML = `<div class="card"><span class="tag">Next Lynbrook match</span>${nm
+      ? `<h3>${nm.home === 'Lynbrook' ? 'vs ' : '@ '}${esc(opp(nm))}</h3><p>${fmt(nm.date)} · ${esc(nm.time)}</p><p class="muted">${nm.home === 'Lynbrook' ? 'Home match' : 'Away match'}</p>${nm.id === sid ? '<p><span class="sn">🎓 Senior Night</span></p>' : ''}`
+      : '<h3>Season complete</h3>'}<a href="#schedule">Full schedule</a></div>
+      <div class="card"><span class="tag">Next practice or open gym</span>${nd
+      ? `<h3>${fmt(nd.d)}</h3>${nd.ss.map(s => `<p><strong>${TYPE[s.type]}</strong> · ${fmtT(s.start)} – ${fmtT(s.end)}${s.changed ? ' <span class="badge st-excused">changed</span>' : ''}</p>`).join('')}`
+      : '<h3>Nothing scheduled yet</h3><p class="muted">Your coach will post practices here.</p>'}<a href="#schedule">View schedule</a></div>`;
+    const open = $$('#ann details[open]').map(d => d.dataset.id), read = local.get('read', []), an = announcements();
+    $('#ann').innerHTML = an.length ? an.map(a => `<details class="ann" data-id="${esc(a.id)}"><summary>${esc(a.t)}${read.includes(a.id) ? '' : '<span class="new">NEW</span>'}</summary><p class="muted">${esc(a.b)}</p></details>`).join('') : '<p class="muted">No announcements right now.</p>';
+    $$('#ann details').forEach(d => { d.open = open.includes(d.dataset.id);
+      d.ontoggle = () => { if (!d.open) return; const r = local.get('read', []); if (!r.includes(d.dataset.id)) local.set('read', [...r, d.dataset.id]); $('.new', d)?.remove(); }; });
+  });
+}
+
+/* ---------- schedule ---------- */
+async function schedule() {
+  await need(['matches', 'overrides', 'init']);
+  let f = 'all', view = today().slice(0, 7);
+  const hm = t => { const [h, m] = t.split(':').map(Number); return ((h % 12) || 12) + (m ? ':' + String(m).padStart(2, '0') : ''); }, ap = t => +t.slice(0, 2) < 12 ? 'AM' : 'PM';
+  const rng = (s, e) => `${hm(s)}${ap(s) === ap(e) ? '' : ' ' + ap(s)}–${hm(e)} ${ap(e)}`, SH = { varsity: 'Varsity', jv: 'JV', open: 'Open Gym' };
+  const drawDefaults = () => { $('#defaults').innerHTML = TYPES.filter(t => DEFAULT_DAYS[t].length).map(t => `<article class="card session ${t}"><span class="tag t-${t}">${TYPE[t]}</span><h3>${daysLabel(DEFAULT_DAYS[t])}</h3><p>${fmtT(DEFAULT_TIMES[t][0])} – ${fmtT(DEFAULT_TIMES[t][1])}</p></article>`).join(''); };
+  const drawCal = () => { const [y, m] = view.split('-').map(Number), lead = new Date(y, m - 1, 1).getDay(), n = new Date(y, m, 0).getDate(), total = Math.ceil((lead + n) / 7) * 7, notes = [], ms = matches(), sid = seniorId(ms); let cells = '';
+    for (let i = 0; i < total; i++) { const day = i - lead + 1;
+      if (day < 1 || day > n) { cells += '<div class="cal-day off"></div>'; continue; }
+      const date = `${view}-${String(day).padStart(2, '0')}`;
+      const chips = (f === 'match' ? [] : sessionsOn(date).filter(s => f === 'all' || s.type === f)).map(s => { if (s.note) notes.push(`${fmt(date)} · ${SH[s.type]}: ${s.note}`);
+          return `<span class="chip t-${s.type}${s.cancelled ? ' x' : ''}${s.changed && !s.cancelled ? ' chg' : ''}" title="${esc(TYPE[s.type] + (s.cancelled ? ' (cancelled)' : '') + (s.note ? ' – ' + s.note : ''))}">${SH[s.type]} ${s.cancelled ? 'cancelled' : rng(s.start, s.end)}</span>`; })
+        .concat(f === 'all' || f === 'match' ? ms.filter(x => x.date === date && isLyn(x)).map(x => `<span class="chip match${x.id === sid ? ' senior' : ''}" title="Lynbrook match · ${esc(x.time)}${x.id === sid ? ' · Senior Night' : ''}">${x.id === sid ? '🎓 Senior Night · ' : ''}${x.home === 'Lynbrook' ? 'vs' : '@'} ${esc(opp(x))}</span>`) : []);
+      cells += `<div class="cal-day${date === today() ? ' today' : ''}"><span class="cal-num">${day}</span>${chips.join('')}</div>`; }
+    $('#cal-title').textContent = new Date(y, m - 1, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    $('#cal-grid').innerHTML = DOW.map(d => `<div class="cal-dow">${d}</div>`).join('') + cells;
+    $('#cal-notes').innerHTML = notes.map(x => `<li class="muted">${esc(x)}</li>`).join(''); };
+  const shift = k => { const [y, m] = view.split('-').map(Number), d = new Date(y, m - 1 + k, 1); view = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`; drawCal(); };
+  $('#cal-prev').onclick = () => shift(-1); $('#cal-next').onclick = () => shift(1); $('#cal-today').onclick = () => { view = today().slice(0, 7); drawCal(); };
+  $$('[data-filter]').forEach(b => b.onclick = () => { f = b.dataset.filter; $$('[data-filter]').forEach(x => x.setAttribute('aria-pressed', x === b)); drawCal(); });
+  const q = $('#q'), lf = $('#lf'), body = $('#matches'), team = t => t === 'Lynbrook' ? '<span class="vik">Lynbrook</span>' : esc(t);
+  const drawM = () => { const s = q.value.trim().toLowerCase(), l = lf.value, all = matches(), sid = seniorId(all);
+    const list = all.filter(m => (l === 'all' || (l === 'lyn' && isLyn(m)) || (l === 'home' && m.home === 'Lynbrook') || (l === 'away' && m.away === 'Lynbrook'))
+      && (!s || `${m.away || ''} ${m.home || ''} ${m.text || ''} ${fmt(m.date)}`.toLowerCase().includes(s)));
+    body.innerHTML = list.length ? list.map(m => { const sn = m.id === sid;
+      return `<tr class="${isLyn(m) ? 'lyn' : ''}${sn ? ' senior' : ''}${m.date < today() ? ' past' : ''}"><td>${fmt(m.date)}${sn ? '<br><span class="sn">🎓 Senior Night</span>' : ''}</td><td>${esc(m.time)}</td>${m.text ? `<td colspan="2"><strong>${esc(m.text)}</strong></td>` : `<td>${team(m.away)}</td><td>${team(m.home)}</td>`}</tr>`; }).join('')
+      : '<tr><td colspan="4">No matches found.</td></tr>'; };
+  q.oninput = lf.onchange = drawM;
+  live(() => { drawDefaults(); drawCal(); drawM(); });
+}
+
+/* ---------- attendance (ID-based check-in, tagged with the session attended) ---------- */
+async function attendance() {
+  await need(['overrides']);
+  const date = $('#date'), who = $('#who'), type = $('#type'), fb = $('#feedback'), btn = $('#checkin button'); date.value = date.max = today(); let manual = false, cur = null;
+  const suggest = p => dayOf(date.value) === 6 ? 'open' : p && p.division === 'JV' ? 'jv' : 'varsity';
+  const hint = () => { $('#sess-note').textContent = sessionLine(date.value, type.value); };
+  const lookup = idLookup(who, $('#idnote'), $('#pfirst'), $('#plast'), p => { cur = p; $('#pgender').value = p?.gender || ''; $('#pdiv').value = p ? p.division : ''; if (!manual) type.value = suggest(p); hint(); });
+  type.onchange = () => { manual = true; hint(); };
+  date.onchange = () => { if (!manual) type.value = suggest(cur); hint(); };
+  const u = me(); if (u) { who.value = u.id; await lookup(); }
+  live(hint);
+  $('#checkin').onsubmit = async e => { e.preventDefault();
+    const msg = (m, c) => { fb.className = 'msg ' + c; fb.textContent = m; }, t = type.value, d = date.value;
+    if (!who.value.trim() || !d) return msg('Enter your Student ID and pick a date.', 'err');
+    btn.disabled = true;
+    try {
+      const p = cur && sameId(cur.id, who.value) ? cur : await lookup();
+      if (!p) return msg('That Student ID isn’t on the team roster. Check the number or ask your coach.', 'err');
+      const ref = doc(db, 'attendance', attId(d, t, p.id)), ex = await getDoc(ref);
+      if (ex.exists()) return msg(`${fullName(p)} is already on the ${TYPE[t]} list for ${fmt(d)} as ${STATUS[st(ex.data())]}. See your coach to change it.`, 'err');
+      await setDoc(ref, attData(p, d, t, 'present'));
+      msg(`✅ Checked in! ${fullName(p)} (${p.division}) · ${TYPE[t]} · ${fmt(d)}`, 'ok'); manual = false; if (!u) { who.value = ''; await lookup(); }
+    } catch (err) { console.error(err); msg(err?.code === 'permission-denied' ? 'The database rules blocked this check-in.' : 'Couldn’t check in. Check your connection and try again.', 'err'); }
+    finally { btn.disabled = false; }
+  };
+}
+
+/* ---------- portal ---------- */
+async function portal() {
+  await need(['matches', 'lineups', 'checklist', 'init']);
+  const auth = $('#auth'), dash = $('#dash'), msg = $('#auth-msg'); let tab = 'dash', selDate = null;
+  const err = t => msg.innerHTML = `<p class="msg err">${esc(t)}</p>`;
+  const startPersonal = async u => { await Promise.all([watch('attendance', query(collection(db, 'attendance'), where('studentId', '==', u.id))), watch('clearance', doc(db, 'clearance', u.id)), loadPlayer(u.id)]); };
+  const stopPersonal = () => { ['attendance', 'clearance'].forEach(k => { subs[k]?.(); delete subs[k]; delete cache[k]; }); };
+  const login = async u => { curUser = u; local.set('session', u.id); tab = 'dash'; selDate = null; await startPersonal(u); layout(); show(); };
+  const show = () => { const u = me(); auth.hidden = !!u; dash.hidden = !u; if (u) render(u); };
+  idLookup($('#li-id'), $('#li-note'))(); idLookup($('#rg-id'), $('#rg-note'), $('#rg-first'), $('#rg-last'))();
+  $$('[data-tab]').forEach(b => b.onclick = () => { $$('[data-tab]').forEach(x => x.setAttribute('aria-pressed', x === b));
+    $('#login-form').hidden = b.dataset.tab !== 'login'; $('#reg-form').hidden = b.dataset.tab !== 'reg'; msg.innerHTML = ''; });
+  $('#login-form').onsubmit = async e => { e.preventDefault(); const id = normId($('#li-id').value), pw = $('#li-pw').value;
+    if (!id || !pw) return err('Enter your Student ID and password.');
+    const u = await loadUser(id);
+    if (!u || u.password !== await hashPw(id, pw)) return err('Student ID or password is incorrect.');
+    $('#li-pw').value = ''; msg.innerHTML = ''; await login(u); };
+  $('#reg-form').onsubmit = async e => { e.preventDefault(); const id = normId($('#rg-id').value), pw = $('#rg-pw').value, p = await loadPlayer(id);
+    if (!p) return err('That Student ID isn’t on the team roster. Ask your coach to add you.');
+    if (pw.length < 4) return err('Password needs 4+ characters.');
+    if (await loadUser(id)) return err('That Student ID is already registered. Try logging in.');
+    const u = { password: await hashPw(id, pw), role: 'player', studentId: p.id, style: '' };
+    try { await setDoc(doc(db, 'users', id), u); } catch (x) { console.error(x); return err('Couldn’t create the account. Try again.'); }
+    $('#rg-pw').value = ''; msg.innerHTML = ''; await login({ id, ...u }); toast('Welcome, ' + p.first + '!'); };
+  function render(u) {
+    const keepStyle = $('#style')?.value, att = records().filter(r => sameId(r.id, u.id)).sort((a, b) => b.date.localeCompare(a.date) || b.ts - a.ts), pl = player(u.id) || {}, nm = nameOf(u);
+    const items = checklist(), cl = clearOf(u.id), n = items.filter(c => cl[c.id]).length, pct = items.length ? Math.round(n / items.length * 100) : 0, don = !!clearRec(u.id).donated;
+    const ms = matches(), sid = seniorId(ms), lyn = ms.filter(isLyn), up = lyn.filter(m => m.date >= today()), list = up.length ? up : lyn, nx = list[0], ns = nx ? mySlots(nx.date, u.id) : [];
+    const style = keepStyle ?? u.style ?? '';
+    dash.innerHTML = `<h2 style="margin-bottom:1rem">Welcome back, ${esc(firstOf(u))} 👋</h2>
+    <div class="tabs" role="group" aria-label="Portal sections" style="margin-bottom:1.25rem"><button class="pill" data-pt="dash" aria-pressed="${tab === 'dash'}">Dashboard</button><button class="pill" data-pt="clear" aria-pressed="${tab === 'clear'}">Clearance</button></div>
+    <div id="pt-dash"${tab === 'dash' ? '' : ' hidden'}>
+    <div class="grid" style="margin-bottom:1.25rem">
+      <div class="card stat"><b>${items.length ? (n === items.length ? 'Cleared' : n + '/' + items.length) : '—'}</b>Clearance<br><button class="btn btn-line mini" data-pt="clear" style="margin:.4rem 0 0">Open checklist</button></div>
+      <div class="card stat"><b>${don ? 'Thank you 💛' : 'Optional'}</b>Team donation<br><small class="muted">no fees required · shuttlecocks &amp; equipment</small><br>${donateHTML()}<br><button class="btn btn-line mini" id="don" style="margin:.4rem 0 0">${don ? 'Undo' : 'I donated'}</button></div>
+      <div class="card stat"><b>${ns.length ? ns.map(s => code(s.b, s.n) + ' ' + s.cat).join(', ') : 'TBD'}</b>Your Next Game Position<br><small class="muted">${nx ? (ns.length ? (nx.home === 'Lynbrook' ? 'vs ' : '@ ') + esc(opp(nx)) + ' · ' + shortD(nx.date) : 'not in the line-up yet') : 'season complete'}</small></div></div>
+    <div class="two"><div class="card"><div class="avatar">${esc(((pl.first || nm)[0] || '') + ((pl.last || '')[0] || ''))}</div>
+      <h3>${esc(nm)}</h3><p class="muted">ID ${esc(u.id)} · ${esc(pl.division || 'Not on roster')}${pl.gender ? ' · ' + esc(pl.gender) : ''}${pl.grade ? ' · Grade ' + esc(pl.grade) : ''}</p>
+      <p class="muted">First name: <strong>${esc(pl.first || nm)}</strong> · Last name: <strong>${esc(pl.last || '')}</strong></p>
+      <label for="style">Play style</label><select id="style"><option value="">Select</option>${['Singles', 'Doubles', 'Mixed'].map(x => `<option${x === style ? ' selected' : ''}>${x}</option>`).join('')}</select>
+      <button class="btn btn-navy" id="save" style="margin-top:1rem">Save profile</button><button class="btn btn-line" id="logout">Log out</button></div>
+      <div class="card"><h3>My attendance</h3><ul class="clean">${att.slice(0, 8).map(r => `<li>${TYPE[r.type] || esc(r.type)} ${badge(r)}<br><span class="muted">${fmt(r.date)}</span></li>`).join('') || '<li class="muted">No check-ins yet. <a href="#attendance">Check in</a></li>'}</ul></div></div>
+    <h2 style="margin:2rem 0 .75rem">Match line-up</h2>
+    <div class="tools"><select id="lm" aria-label="Choose a match">${list.map(m => `<option value="${m.date}">${esc(matchLabel(m, sid))}</option>`).join('')}</select></div>
+    <div id="me-card"></div><p class="muted" style="margin:1rem 0 .5rem">Full team line-up (ranks 1–3). Gold cells are your spots.</p><div id="lu-view"></div></div>
+    <div id="pt-clear"${tab === 'clear' ? '' : ' hidden'}>
+      <div class="card" style="max-width:720px"><h2>Player Checklist</h2><p class="muted">Check off each item once you’ve finished it. Your coach can update it too.</p>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><p><strong>${pct}%</strong> · ${items.length && n === items.length ? '✅ Fully cleared!' : `${n} of ${items.length} done`}</p>
+        <div id="cl-list">${items.map(c => `<label class="check"><input type="checkbox" data-c="${esc(c.id)}"${cl[c.id] ? ' checked' : ''}><span>${esc(c.label)}</span></label>`).join('') || '<p class="muted">Your coach hasn’t added any checklist items yet.</p>'}</div></div>
+      <div class="card" style="max-width:720px;margin-top:1.25rem"><h3>💛 Optional Team Donation</h3><p>There are no required team fees. If you’d like to help, donations go toward shuttlecocks and equipment.</p><div style="margin-top:.75rem">${donateHTML()}</div></div></div>`;
+    $$('[data-pt]', dash).forEach(b => b.onclick = () => { tab = b.dataset.pt; $$('.pill[data-pt]', dash).forEach(x => x.setAttribute('aria-pressed', x.dataset.pt === tab)); $('#pt-dash').hidden = tab !== 'dash'; $('#pt-clear').hidden = tab !== 'clear'; });
+    $('#cl-list').onchange = e => { const id = e.target.dataset.c; if (id) setClear(u.id, id, e.target.checked); };
+    const lm = $('#lm'); if (selDate && [...lm.options].some(o => o.value === selDate)) lm.value = selDate;
+    const drawL = () => { const date = lm.value; if (!date) { $('#me-card').innerHTML = ''; $('#lu-view').innerHTML = ''; return; }
+      selDate = date; const m = lyn.find(x => x.date === date), slots = mySlots(date, u.id);
+      const lines = slots.length ? slots.map(s => `<p><strong>Your Next Game Position: ${BLOCKS[s.b]} ${LINE[s.cat][0]} ${s.n} (${code(s.b, s.n)} ${s.cat})</strong>${s.partner.length ? ' with partner ' + esc(s.partner.join(' & ')) : ''}</p>`).join('')
+        : `<p class="muted">${hasLineup(date) ? 'You aren’t in this match’s line-up.' : 'The line-up for this match hasn’t been posted yet.'}</p>`;
+      $('#me-card').innerHTML = `<div class="card me-card"><span class="tag">Your Upcoming Match</span><h3>${m.home === 'Lynbrook' ? 'vs ' : '@ '}${esc(opp(m))} · ${fmt(date)}</h3>${m.id === sid ? '<p><span class="sn">🎓 Senior Night</span></p>' : ''}${lines}</div>`;
+      $('#lu-view').innerHTML = matrix(date, 'V', { me: u.id }) + '<div style="height:1rem"></div>' + matrix(date, 'J', { me: u.id }); };
+    lm.onchange = drawL; drawL();
+    $('#don').onclick = () => save(setDoc(doc(db, 'clearance', normId(u.id)), { donated: !don }, { merge: true }));
+    $('#save').onclick = async () => { try { await updateDoc(doc(db, 'users', u.id), { style: $('#style').value }); curUser.style = $('#style').value; toast('Profile saved'); } catch (x) { fail(x); } };
+    $('#logout').onclick = () => { stopPersonal(); curUser = null; local.del('session'); tab = 'dash'; layout(); show(); };
+  }
+  const fail = x => save(Promise.reject(x));
+  const donateHTML = () => DONATE_URL ? `<a class="btn btn-gold" href="${esc(DONATE_URL)}" target="_blank" rel="noopener" style="margin:0">Donate (optional)</a>` : '<span class="muted">Donation link coming soon. Ask your coach.</span>';
+  if (me()) await startPersonal(me());
+  live(() => { const u = me(); if (u) render(u); });
+  show();
+}
+
+/* ---------- admin ---------- */
+async function admin() {
+  const gate = $('#gate'), setup = $('#setup'), panel = $('#panel');
+  const adminHash = (salt, c) => sha256(`lhsb-admin|${salt}|${c}`);
+  const unlock = async () => {
+    sess.set('isAdmin', true); gate.hidden = setup.hidden = true; panel.hidden = false;
+    await need(['roster', 'attendance', 'lineups', 'matches', 'overrides', 'announcements', 'checklist', 'clearance', 'init']);
+    build();
+  };
+  if (sess.get('isAdmin', false)) return unlock();
+  let cfg = null;
+  try { const s = await getDoc(doc(db, 'config', 'admin')); cfg = s.exists() ? s.data() : null; } catch (e) { return banner(dbMsg(e), 'err'); }
+  gate.hidden = !cfg; setup.hidden = !!cfg;
+  $('#setup-form').onsubmit = async e => { e.preventDefault(); const a = $('#su-code').value, b = $('#su-code2').value, m = $('#setup-msg');
+    const bad = t => { m.innerHTML = `<p class="msg err">${esc(t)}</p>`; };
+    if (a.length < 6) return bad('Use at least 6 characters.'); if (a !== b) return bad('The two codes don’t match.');
+    try {
+      if ((await getDoc(doc(db, 'config', 'admin'))).exists()) return bad('An admin code already exists. Reload the page and log in.');
+      const salt = [...crypto.getRandomValues(new Uint8Array(8))].map(x => x.toString(16).padStart(2, '0')).join('');
+      await setDoc(doc(db, 'config', 'admin'), { salt, hash: await adminHash(salt, a) }); unlock();
+    } catch (err) { console.error(err); bad(dbMsg(err)); } };
+  $('#gate-form').onsubmit = async e => { e.preventDefault(); const m = $('#gate-msg');
+    try { const s = await getDoc(doc(db, 'config', 'admin')), c = s.exists() ? s.data() : null;
+      if (c && await adminHash(c.salt, $('#code').value) === c.hash) unlock(); else m.innerHTML = '<p class="msg err">Incorrect admin code.</p>'; }
+    catch (err) { console.error(err); m.innerHTML = `<p class="msg err">${esc(dbMsg(err))}</p>`; } };
+
+  function build() {
+    $('#logout-admin').onclick = () => { sess.del('isAdmin'); location.reload(); };
+    const showTab = t => { local.set('adminTab', t); $$('[data-at]', panel).forEach(b => b.setAttribute('aria-pressed', b.dataset.at === t)); $$('[data-pane]', panel).forEach(p => { p.hidden = p.dataset.pane !== t; }); };
+    $$('[data-at]', panel).forEach(b => b.onclick = () => showTab(b.dataset.at));
+    const t0 = local.get('adminTab', 'roster'); showTab($(`[data-at="${t0}"]`, panel) ? t0 : 'roster');
+    $$('.subtabs', panel).forEach(g => { const grp = g.dataset.group, set = s => { $$('button', g).forEach(b => b.setAttribute('aria-pressed', b.dataset.s === s)); $$(`[data-sg="${grp}"]`, panel).forEach(x => { x.hidden = x.dataset.s !== s; }); local.set('sub:' + grp, s); };
+      $$('button', g).forEach(b => b.onclick = () => set(b.dataset.s)); const s0 = local.get('sub:' + grp, ''); set($(`button[data-s="${s0}"]`, g) ? s0 : $('button', g).dataset.s); });
+    const ro = () => roster().sort(byName);
+    const busy = el => { const a = document.activeElement; return !!a && el.contains(a) && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName); }; // don't redraw a table while someone is editing inside it
+
+    /* ===== roster ===== */
+    const pq = $('#p-q'); let editId = null;
+    const resetP = () => { editId = null; $('#p-form').reset(); $('#p-id').readOnly = false; $('#p-save').textContent = 'Add player'; $('#p-cancel').hidden = true; };
+    const drawP = () => { const s = pq.value.trim().toLowerCase(), l = ro().filter(p => !s || `${p.id} ${p.first} ${p.last} ${p.gender} ${p.division}`.toLowerCase().includes(s));
+      $('#p-count').textContent = `${roster().length} registered player${roster().length === 1 ? '' : 's'}`;
+      $('#p-body').innerHTML = l.length ? l.map(p => `<tr><td>${esc(p.id)}</td><td>${esc(p.first)}</td><td>${esc(p.last)}</td><td>${esc(p.gender || '—')}</td><td>${esc(p.division)}</td><td>${esc(p.grade)}</td><td><button class="btn btn-line mini" data-edit="${esc(p.id)}">Edit</button><button class="btn btn-line mini" data-rm="${esc(p.id)}">Remove</button></td></tr>`).join('')
+        : '<tr><td colspan="7">No players yet. Add one above.</td></tr>'; };
+    pq.oninput = drawP; $('#p-cancel').onclick = resetP;
+    const rosterDoc = p => ({ firstName: p.first, lastName: p.last, gender: p.gender, division: p.division, grade: p.grade });
+    $('#p-form').onsubmit = e => { e.preventDefault();
+      const p = { id: normId($('#p-id').value), first: $('#p-first').value.trim(), last: $('#p-last').value.trim(), gender: $('#p-gender').value, division: $('#p-div').value, grade: $('#p-grade').value };
+      if (!p.id || !p.first || !p.last) return toast('Enter a Student ID, first name and last name');
+      if (!/^[a-z0-9_-]+$/.test(p.id)) return toast('Student ID can use letters, numbers, - and _ only');
+      if (!p.gender) return toast('Pick Male or Female');
+      const was = editId !== null; if (!was && player(p.id)) return toast('That Student ID is already on the roster');
+      save(setDoc(doc(db, 'roster', p.id), rosterDoc(p))); resetP(); toast(was ? 'Player updated' : 'Player added'); };
+    $('#p-body').onclick = e => { const b = e.target.closest('button'); if (!b) return;
+      if (b.dataset.edit !== undefined) { const p = player(b.dataset.edit); if (!p) return; editId = p.id;
+        $('#p-id').value = p.id; $('#p-id').readOnly = true; $('#p-first').value = p.first; $('#p-last').value = p.last; $('#p-gender').value = p.gender || ''; $('#p-div').value = p.division; $('#p-grade').value = p.grade;
+        $('#p-save').textContent = 'Save changes'; $('#p-cancel').hidden = false; $('#p-first').focus(); }
+      else if (b.dataset.rm !== undefined) { save(deleteDoc(doc(db, 'roster', b.dataset.rm))); resetP(); toast('Player removed (their attendance records are kept)'); } };
+    $('#p-sample').onclick = () => { const b = writeBatch(db); let n = 0; SAMPLE.forEach(p => { if (!player(p.id)) { b.set(doc(db, 'roster', p.id), rosterDoc(p)); n++; } });
+      if (!n) return toast('Sample players are already loaded'); save(b.commit()); toast(`Loaded ${n} sample players`); };
+
+    /* ===== practices & open gym (defaults + per-date changes) ===== */
+    const defs = TYPES.filter(t => DEFAULT_DAYS[t].length);
+    $('#def-times').textContent = (defs.length ? 'Default: ' + defs.map(t => `${TYPE[t]} ${daysLabel(DEFAULT_DAYS[t])} ${fmtT(DEFAULT_TIMES[t][0])} – ${fmtT(DEFAULT_TIMES[t][1])}`).join(' · ') + '. ' : '') + 'Varsity and JV practices appear only when you add them here.';
+    const oD = $('#o-date'), oT = $('#o-type'), oS = $('#o-start'), oE = $('#o-end'), oN = $('#o-note'), oC = $('#o-cancel'), oU = $('#o-until'); oD.value = today();
+    const loadO = () => { if (!oD.value) return; const s = sessionsOn(oD.value).find(x => x.type === oT.value), def = defTimes(oT.value, oD.value);
+      oS.value = s ? s.start : DEFAULT_TIMES[oT.value][0]; oE.value = s ? s.end : DEFAULT_TIMES[oT.value][1]; oN.value = s?.note || ''; oC.checked = !!s?.cancelled;
+      $('#o-hint').textContent = def ? `Default for ${DOW_FULL[dayOf(oD.value)]}: ${fmtT(def[0])} – ${fmtT(def[1])}.` : s ? 'Added for this date. Change it or cancel it below.' : `${TYPE[oT.value]} isn’t scheduled by default. Saving will add it on this date.`; };
+    const drawO = () => { const l = overrides().filter(o => o.date >= today()).sort((a, b) => a.date.localeCompare(b.date) || a.type.localeCompare(b.type));
+      $('#o-list').innerHTML = l.length ? l.slice(0, 60).map(o => `<li><strong>${fmt(o.date)}</strong> · ${TYPE[o.type]} · ${o.cancelled ? '<strong>Cancelled</strong>' : fmtT(o.start) + ' – ' + fmtT(o.end)}${o.note ? ' · ' + esc(o.note) : ''}<button class="btn btn-line mini" data-rm="${esc(o.id)}">${defTimes(o.type, o.date) ? 'Reset to default' : 'Remove'}</button></li>`).join('') : '<li class="muted">Nothing added yet. Only the default schedule is showing.</li>'; };
+    oD.onchange = oT.onchange = loadO;
+    $('#o-form').onsubmit = e => { e.preventDefault(); if (!oD.value) return toast('Pick a date'); const c = oC.checked, until = oU.value;
+      if (!c && (!oS.value || !oE.value || oE.value <= oS.value)) return toast('Pick a valid start and end time');
+      if (until && until < oD.value) return toast('“Repeat weekly until” must be on or after the date');
+      const dates = []; for (let d = oD.value; d <= (until || oD.value) && dates.length < 60; d = addDays(d, 7)) dates.push(d);
+      const base = DEFAULT_TIMES[oT.value], b = writeBatch(db);
+      dates.forEach(d => { const def = defTimes(oT.value, d), same = !!def && !c && oS.value === def[0] && oE.value === def[1] && !oN.value.trim(), ref = doc(db, 'overrides', `${d}_${oT.value}`);
+        if (same) b.delete(ref); else b.set(ref, { date: d, type: oT.value, start: oS.value || base[0], end: oE.value || base[1], cancelled: c, note: oN.value.trim() }); });
+      save(b.commit()); oU.value = ''; toast(dates.length > 1 ? `Saved for ${dates.length} weeks` : c ? 'Session cancelled for that date' : 'Saved for that date'); };
+    $('#o-list').onclick = e => { const id = e.target.dataset.rm; if (!id) return; save(deleteDoc(doc(db, 'overrides', id))); toast('Removed'); };
+
+    /* ===== attendance log (edit history) ===== */
+    const hq = $('#h-q'), hd = $('#h-date'), ht = $('#h-type'), hs = $('#h-st'), lp = $('#l-player'), ld = $('#l-date'); ld.value = ld.max = today();
+    const logRows = () => { const s = hq.value.trim().toLowerCase();
+      return records().filter(r => (ht.value === 'all' || r.type === ht.value) && (hs.value === 'all' || st(r) === hs.value) && (!hd.value || r.date === hd.value)
+        && (!s || `${r.first} ${r.last} ${r.id || ''}`.toLowerCase().includes(s))).sort((a, b) => b.date.localeCompare(a.date) || b.ts - a.ts); };
+    const typeOpts = cur => TYPES.map(k => `<option value="${k}"${k === cur ? ' selected' : ''}>${TYPE[k]}</option>`).join('');
+    const drawLP = () => { if (busy(lp)) return; const keepV = lp.value; lp.innerHTML = ro().map(p => `<option value="${esc(p.id)}">${esc(p.last)}, ${esc(p.first)} (${esc(p.id)})</option>`).join('') || '<option value="">No players on roster</option>'; if (keepV) lp.value = keepV; };
+    const drawH = () => { const r = logRows(); $('#h-count').textContent = r.length + (r.length === 1 ? ' record' : ' records') + (r.length > 300 ? ' (showing the newest 300)' : '');
+      if (busy($('#h-body'))) return;
+      $('#h-body').innerHTML = r.length ? r.slice(0, 300).map(x => `<tr><td>${esc(x.id || '')}</td><td>${esc(x.first)}</td><td>${esc(x.last)}</td>
+        <td><input type="date" value="${esc(x.date)}" max="${today()}" data-rid="${esc(x.rid)}" data-f="date" aria-label="Date"></td>
+        <td><select data-rid="${esc(x.rid)}" data-f="type" aria-label="Session">${typeOpts(x.type)}</select></td>
+        <td><select data-rid="${esc(x.rid)}" data-f="status" aria-label="Status">${Object.entries(STATUS).map(([k, v]) => `<option value="${k}"${st(x) === k ? ' selected' : ''}>${v}</option>`).join('')}</select></td>
+        <td><button class="btn btn-line mini" data-del="${esc(x.rid)}">Delete</button></td></tr>`).join('') : '<tr><td colspan="7">No records match.</td></tr>'; };
+    hq.oninput = hd.onchange = ht.onchange = hs.onchange = drawH;
+    $('#h-clear').onclick = () => { hq.value = hd.value = ''; ht.value = hs.value = 'all'; drawH(); };
+    $('#h-body').onchange = e => { const t = e.target, id = t.dataset.rid, f = t.dataset.f; if (!id) return; const x = records().find(r => r.rid === id); if (!x) return;
+      if (f === 'status') { save(updateDoc(doc(db, 'attendance', id), { status: t.value })); return toast('Attendance updated'); }
+      const date = f === 'date' ? t.value : x.date, type = f === 'type' ? t.value : x.type;
+      if (!date) { drawH(); return toast('Pick a date'); }
+      const nid = attId(date, type, x.id); // date and session are part of the document ID, so a change moves the document
+      if (nid !== id && records().some(r => r.rid === nid)) { drawH(); return toast('That player already has a log for that date and session'); }
+      const b = writeBatch(db); b.set(doc(db, 'attendance', nid), attData({ id: x.id, first: x.first, last: x.last, division: x.div }, date, type, x.status, x.by, x.ts)); if (nid !== id) b.delete(doc(db, 'attendance', id));
+      save(b.commit()); toast('Attendance updated'); };
+    $('#h-body').onclick = e => { const b = e.target.closest('button[data-del]'); if (!b) return; save(deleteDoc(doc(db, 'attendance', b.dataset.del))); toast('Log deleted'); };
+    $('#l-form').onsubmit = e => { e.preventDefault(); const p = player(lp.value), type = $('#l-type').value;
+      if (!p) return toast('Pick a player (add players to the roster first)'); if (!ld.value) return toast('Pick a date');
+      const id = attId(ld.value, type, p.id); if (records().some(r => r.rid === id)) return toast(`${fullName(p)} already has a log for that date and session. Edit it in the table.`);
+      save(setDoc(doc(db, 'attendance', id), attData(p, ld.value, type, $('#l-st').value, 'admin'))); toast('Log added'); };
+    $('#csv').onclick = () => { const q = v => '"' + String(v ?? '').replace(/^([=+\-@])/, "'$1").replace(/"/g, '""') + '"';
+      const lines = [['Student ID', 'First Name', 'Last Name', 'Gender', 'Division', 'Date', 'Session', 'Status', 'Recorded at'].map(q).join(',')].concat(logRows().map(r => [r.id || '', r.first, r.last, player(r.id)?.gender || '', r.div || player(r.id)?.division || '', r.date, TYPE[r.type] || r.type, STATUS[st(r)], new Date(r.ts).toISOString()].map(q).join(',')));
+      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([lines.join('\r\n')], { type: 'text/csv' })); a.download = 'lynbrook-attendance-' + today() + '.csv';
+      document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); };
+
+    /* ===== take attendance (per-session grid) ===== */
+    const ad = $('#a-date'), at = $('#a-type'), adv = $('#a-div'), ab = $('#a-body'), pick = $('#a-pick'); ad.value = today();
+    const divFor = t => t === 'varsity' ? 'Varsity' : t === 'jv' ? 'JV' : 'all'; adv.value = divFor(at.value);
+    const dayRecs = () => records().filter(r => r.date === ad.value && r.type === at.value);
+    const shown = () => ro().filter(p => adv.value === 'all' || p.division === adv.value);
+    const drawA = () => { const day = dayRecs(), c = k => day.filter(r => st(r) === k).length;
+      $('#a-sum').textContent = `${TYPE[at.value]} · ${fmt(ad.value)} · ${c('present')} present · ${c('excused')} excused · ${c('unexcused')} unexcused · ${shown().filter(p => !day.some(r => sameId(r.id, p.id))).length} not recorded`;
+      ab.innerHTML = shown().length ? shown().map(p => { const r = day.find(x => sameId(x.id, p.id)), cur = r ? st(r) : '';
+        return `<tr><td>${esc(p.id)}</td><td>${esc(p.first)}</td><td>${esc(p.last)}</td><td>${esc(p.division)}</td><td><div class="seg" role="group" aria-label="Status for ${esc(fullName(p))}">${Object.entries(SHORT).map(([k, v]) => `<button class="st-${k}" data-id="${esc(p.id)}" data-s="${k}" aria-pressed="${cur === k}">${v}</button>`).join('')}</div></td></tr>`; }).join('')
+        : '<tr><td colspan="5">No players to show. Add players to the roster first.</td></tr>'; };
+    const drawPick = () => { if (busy(pick)) return; let o = '<option value="">Jump to a recent session…</option>';
+      for (let i = 0; i < 21; i++) { const d = addDays(today(), -i); sessionsOn(d).filter(s => !s.cancelled).forEach(s => { o += `<option value="${d}|${s.type}">${fmt(d)} · ${TYPE[s.type]}</option>`; }); }
+      pick.innerHTML = o; };
+    const setSt = (b, p, s) => { const ref = doc(db, 'attendance', attId(ad.value, at.value, p.id)), has = dayRecs().some(x => sameId(x.id, p.id));
+      if (has && !s) b.delete(ref); else if (has) b.set(ref, { status: s }, { merge: true }); else if (s) b.set(ref, attData(p, ad.value, at.value, s, 'admin')); };
+    ab.onclick = e => { const btn = e.target.closest('button[data-s]'); if (!btn) return; const p = player(btn.dataset.id); if (!p) return;
+      const r = dayRecs().find(x => sameId(x.id, p.id)), b = writeBatch(db); setSt(b, p, r && st(r) === btn.dataset.s ? '' : btn.dataset.s); save(b.commit()); };
+    $('#a-all').onclick = () => { const b = writeBatch(db); shown().forEach(p => setSt(b, p, 'present')); save(b.commit()); toast('Marked everyone shown as Present'); };
+    ad.onchange = adv.onchange = () => { drawA(); drawH(); }; at.onchange = () => { adv.value = divFor(at.value); drawA(); };
+    pick.onchange = () => { if (!pick.value) return; [ad.value, at.value] = pick.value.split('|'); adv.value = divFor(at.value); drawA(); };
+
+    /* ===== game line-ups ===== */
+    const lm = $('#lu-match'); let blk = 'V';
+    const fillLM = () => { if (busy(lm)) return; const ms = matches(), lyn = ms.filter(isLyn), sid = seniorId(ms), keepV = lm.value;
+      lm.innerHTML = lyn.map(m => `<option value="${m.date}">${esc(matchLabel(m, sid))}</option>`).join('') || '<option value="">No Lynbrook matches</option>';
+      const ni = lyn.findIndex(m => m.date >= today()); lm.value = lyn.some(m => m.date === keepV) ? keepV : (lyn[ni >= 0 ? ni : 0]?.date ?? ''); };
+    const drawLU = () => { if (busy($('#lu-box'))) return; $('#lu-box').innerHTML = lm.value ? matrix(lm.value, blk, { edit: true }) : '<p class="muted">Add a Lynbrook match first (Schedule > League matches).</p>'; };
+    lm.onchange = drawLU;
+    $$('[data-b]', panel).forEach(b => b.onclick = () => { blk = b.dataset.b; $$('[data-b]', panel).forEach(x => x.setAttribute('aria-pressed', x === b)); drawLU(); });
+    $('#lu-box').onchange = e => { const k = e.target.dataset.k; if (!k) return; if (!setSlot(lm.value, blk, k, +e.target.dataset.j, e.target.value)) { toast('Pick two different players for a doubles slot'); drawLU(); } };
+    $('#lu-clear').onclick = () => { if (lineupOf(lm.value)[blk]) save(updateDoc(doc(db, 'lineups', lm.value), { [blk]: {} })); toast(BLOCKS[blk] + ' line-up cleared'); };
+
+    /* ===== league matches (edit, add, delete, reset) ===== */
+    const mmF = $('#mm-filter'), teamNames = Object.values(TEAMS);
+    const teamOpts = cur => (teamNames.includes(cur) ? teamNames : [...teamNames, cur]).map(t => `<option${t === cur ? ' selected' : ''}>${esc(t)}</option>`).join('');
+    $('#mm-away').innerHTML = teamOpts('Cupertino'); $('#mm-home').innerHTML = teamOpts('Lynbrook');
+    const drawMM = () => { if (busy($('#mm-body'))) return; const l = matches().filter(m => mmF.value === 'all' || m.text !== undefined || isLyn(m));
+      $('#mm-body').innerHTML = l.length ? l.map(m => `<tr data-id="${esc(m.id)}"><td><input type="date" data-f="date" value="${esc(m.date)}" aria-label="Date"></td><td><input data-f="time" value="${esc(m.time)}" aria-label="Time"></td>${m.text !== undefined
+        ? `<td colspan="2"><input data-f="text" value="${esc(m.text)}" aria-label="Event"></td>`
+        : `<td><select data-f="away" aria-label="Away team">${teamOpts(m.away)}</select></td><td><select data-f="home" aria-label="Home team">${teamOpts(m.home)}</select></td>`}<td><button class="btn btn-line mini" data-del="${esc(m.id)}">Delete</button></td></tr>`).join('') : '<tr><td colspan="5">No matches.</td></tr>'; };
+    mmF.onchange = drawMM;
+    $('#mm-body').onchange = async e => { const t = e.target, f = t.dataset.f; if (!f) return; const id = t.closest('tr').dataset.id, all = matches(), m = all.find(x => x.id === id); if (!m) return; const v = t.value.trim();
+      if (f === 'date' && !v) { drawMM(); return toast('Pick a date'); }
+      if (f === 'text' && !v) { drawMM(); return toast('The event needs a description'); }
+      if ((f === 'away' || f === 'home') && v === (f === 'away' ? m.home : m.away)) { drawMM(); return toast('A team can’t play itself'); }
+      if (!(await ready('matches'))) return;
+      const b = writeBatch(db); b.update(doc(db, 'matches', id), { [f]: v });
+      if (f === 'date' && m.date !== v && isLyn(m)) { const lu = lineupOf(m.date); // keep the line-up with the match when its date moves
+        if (Object.keys(lu).length && !cache.lineups.has(v) && !all.some(x => x.id !== id && x.date === m.date && isLyn(x))) { b.set(doc(db, 'lineups', v), { ...lu, date: v }); b.delete(doc(db, 'lineups', m.date)); } }
+      save(b.commit()); toast('Match updated'); };
+    $('#mm-body').onclick = async e => { const b = e.target.closest('button[data-del]'); if (!b || !(await ready('matches'))) return; save(deleteDoc(doc(db, 'matches', b.dataset.del))); toast('Deleted'); };
+    $('#mm-form').onsubmit = async e => { e.preventDefault(); const d = $('#mm-date').value, a = $('#mm-away').value, h = $('#mm-home').value;
+      if (!d) return toast('Pick a date'); if (a === h) return toast('A team can’t play itself'); if (!(await ready('matches'))) return;
+      save(setDoc(doc(db, 'matches', 'm' + Date.now()), { date: d, time: $('#mm-time').value.trim(), away: a, home: h })); toast('Match added'); };
+    $('#me-form').onsubmit = async e => { e.preventDefault(); const d = $('#me-date').value, t = $('#me-text').value.trim(); if (!d || !t) return toast('Add a date and a description'); if (!(await ready('matches'))) return;
+      save(setDoc(doc(db, 'matches', 'm' + Date.now()), { date: d, time: $('#me-time').value.trim(), text: t })); $('#me-text').value = ''; toast('Event added'); };
+    let mmRst = 0; $('#mm-reset').onclick = async e => { const btn = e.target, label = 'Reset to official SCVAL schedule';
+      if (!mmRst) { btn.textContent = 'Click again to restore the official schedule'; mmRst = setTimeout(() => { mmRst = 0; btn.textContent = label; }, 4000); return; }
+      clearTimeout(mmRst); mmRst = 0; btn.textContent = label;
+      try { const snap = await getDocs(collection(db, 'matches')), b = writeBatch(db); snap.docs.forEach(d => b.delete(doc(db, 'matches', d.id))); b.set(doc(db, 'config', 'init'), { matches: false }, { merge: true }); await b.commit(); cache.init = new Map([['init', { ...initFlags(), matches: false }]]); toast('Restored the official SCVAL schedule'); }
+      catch (x) { save(Promise.reject(x)); } };
+
+    /* ===== home page announcements ===== */
+    let anEdit = null; const anT = $('#an-title'), anB = $('#an-body');
+    const resetAn = () => { anEdit = null; anT.value = anB.value = ''; $('#an-save').textContent = 'Post announcement'; $('#an-cancel').hidden = true; };
+    const drawAn = () => { $('#an-list').innerHTML = announcements().map(a => `<li><strong>${esc(a.t)}</strong><br><span class="muted">${esc(a.b)}</span><br><button class="btn btn-line mini" data-edit="${esc(a.id)}" style="margin:.4rem .4rem 0 0">Edit</button><button class="btn btn-line mini" data-del="${esc(a.id)}" style="margin:.4rem 0 0">Delete</button></li>`).join('') || '<li class="muted">No announcements yet.</li>'; };
+    $('#an-form').onsubmit = async e => { e.preventDefault(); const t = anT.value.trim(), b = anB.value.trim(); if (!t) return toast('Add a title'); if (!(await ready('announcements'))) return;
+      const was = anEdit; save(was ? updateDoc(doc(db, 'announcements', was), { title: t, body: b }) : setDoc(doc(db, 'announcements', 'n' + Date.now()), { title: t, body: b, order: Date.now() }));
+      resetAn(); toast(was ? 'Announcement updated' : 'Announcement posted'); };
+    $('#an-cancel').onclick = resetAn;
+    $('#an-list').onclick = async e => { const b = e.target.closest('button'); if (!b) return;
+      if (b.dataset.edit) { const a = announcements().find(x => x.id === b.dataset.edit); if (!a) return; anEdit = a.id; anT.value = a.t; anB.value = a.b; $('#an-save').textContent = 'Save changes'; $('#an-cancel').hidden = false; anT.focus(); }
+      else if (b.dataset.del) { if (!(await ready('announcements'))) return; save(deleteDoc(doc(db, 'announcements', b.dataset.del))); if (anEdit === b.dataset.del) resetAn(); toast('Announcement deleted'); } };
+
+    /* ===== clearance checklist + per-player clearance ===== */
+    const ckList = $('#ck-list');
+    const drawCk = () => { if (busy(ckList)) return; const l = checklist();
+      ckList.innerHTML = l.length ? l.map((c, i) => `<li class="row"><input value="${esc(c.label)}" data-ck="${esc(c.id)}" aria-label="Checklist item ${i + 1}"><button class="btn btn-line mini" data-up="${esc(c.id)}" aria-label="Move up"${i ? '' : ' disabled'}>↑</button><button class="btn btn-line mini" data-down="${esc(c.id)}" aria-label="Move down"${i < l.length - 1 ? '' : ' disabled'}>↓</button><button class="btn btn-line mini" data-del="${esc(c.id)}">Delete</button></li>`).join('') : '<li class="muted">No checklist items. Players will see an empty checklist.</li>'; };
+    $('#ck-form').onsubmit = async e => { e.preventDefault(); const v = $('#ck-label').value.trim(); if (!v) return toast('Type the checklist item first'); if (!(await ready('checklist'))) return;
+      const mx = Math.max(0, ...checklist().map(c => c.order)); save(setDoc(doc(db, 'checklist', 'c' + Date.now()), { label: v, order: mx + 1 })); $('#ck-label').value = ''; toast('Item added'); };
+    ckList.onchange = async e => { const id = e.target.dataset.ck; if (!id) return; const v = e.target.value.trim(); if (!v) { drawCk(); return toast('An item can’t be empty'); } if (!(await ready('checklist'))) return;
+      save(updateDoc(doc(db, 'checklist', id), { label: v })); toast('Item updated'); };
+    ckList.onclick = async e => { const b = e.target.closest('button'); if (!b || b.disabled) return; if (!(await ready('checklist'))) return;
+      const l = checklist(), id = b.dataset.up || b.dataset.down || b.dataset.del, i = l.findIndex(x => x.id === id); if (i < 0) return;
+      if (b.dataset.del) return save(deleteDoc(doc(db, 'checklist', id)));
+      const j = b.dataset.up ? i - 1 : i + 1; if (j < 0 || j >= l.length) return; const w = writeBatch(db);
+      w.update(doc(db, 'checklist', l[i].id), { order: l[j].order }); w.update(doc(db, 'checklist', l[j].id), { order: l[i].order }); save(w.commit()); };
+    const pcSel = $('#pc-player'); let pcId = null;
+    const drawPC = () => { const ps = ro(), items = checklist(); if (!ps.some(p => sameId(p.id, pcId))) pcId = ps[0]?.id ?? null;
+      if (!busy(pcSel)) pcSel.innerHTML = ps.map(p => `<option value="${esc(p.id)}"${sameId(p.id, pcId) ? ' selected' : ''}>${esc(p.last)}, ${esc(p.first)} (${esc(p.id)})</option>`).join('') || '<option value="">No players on roster</option>';
+      if (!busy($('#pc-list'))) { const p = player(pcId), c = p ? clearOf(p.id) : {};
+        $('#pc-list').innerHTML = !p ? '<p class="muted">Add players to the roster first.</p>' : items.length ? items.map(i => `<label class="check"><input type="checkbox" data-c="${esc(i.id)}"${c[i.id] ? ' checked' : ''}><span>${esc(i.label)}</span></label>`).join('') : '<p class="muted">No checklist items yet. Add some in the Checklist tab.</p>'; }
+      $('#pc-body').innerHTML = ps.length ? ps.map(q => { const k = clearOf(q.id), a = items.filter(i => k[i.id]).length; return `<tr><td>${esc(q.first)}</td><td>${esc(q.last)}</td><td>${esc(q.division)}</td><td>${items.length ? `${a} of ${items.length}${a === items.length ? ' ✅' : ''}` : '—'}</td><td><button class="btn btn-line mini" data-pc="${esc(q.id)}">Edit</button></td></tr>`; }).join('') : '<tr><td colspan="5">No players yet.</td></tr>'; };
+    pcSel.onchange = () => { pcId = pcSel.value; drawPC(); };
+    $('#pc-list').onchange = e => { const id = e.target.dataset.c; if (id && pcId !== null) setClear(pcId, id, e.target.checked); };
+    const setAll = v => { if (pcId === null) return; save(setDoc(doc(db, 'clearance', normId(pcId)), { done: Object.fromEntries(checklist().map(i => [i.id, v])) }, { merge: true })); toast(v ? 'Marked all done' : 'Cleared all'); };
+    $('#pc-all').onclick = () => setAll(true); $('#pc-none').onclick = () => setAll(false);
+    $('#pc-body').onclick = e => { const b = e.target.closest('button[data-pc]'); if (!b) return; pcId = b.dataset.pc; drawPC(); pcSel.scrollIntoView?.({ block: 'center' }); };
+
+    live(() => { drawP(); drawLP(); drawO(); loadO(); drawPick(); drawA(); drawH(); fillLM(); drawLU(); drawMM(); drawAn(); drawCk(); drawPC(); });
+  }
+}
+
+/* ---------- start (preview: pages switch by #hash) ---------- */
+const VIEWS = {"home": "<section class=\"hero\"><h1>Lynbrook High School Badminton<\/h1><p>Home of the Vikings Badminton Team &amp; Community Open Gym.<\/p><a class=\"btn btn-gold btn-xl\" href=\"#attendance\">Check In Now<\/a><a class=\"btn btn-ghost btn-xl\" href=\"#schedule\">View Schedule<\/a><\/section>\n<main class=\"wrap section\"><div class=\"grid\" id=\"next\" style=\"margin-bottom:1.5rem\"><\/div>\n<div class=\"card\"><h2>\ud83d\udce3 Quick Announcements<\/h2><div id=\"ann\"><\/div><\/div><\/main>", "schedule": "<section class=\"page-head\"><div class=\"wrap\"><h1>Schedule<\/h1><p>Open gym, practices and league matches.<\/p><\/div><\/section>\n<main class=\"wrap section\"><h2>Open Gym &amp; Practices<\/h2>\n<div class=\"grid\" id=\"defaults\"><\/div>\n<p class=\"muted\" style=\"margin-top:.75rem\">Varsity and JV practices show up on the calendar when coaches schedule them. Coaches can also change the time of any day. Non-marking indoor shoes are required for Open Gym.<\/p>\n<div class=\"cal-bar\"><h3 id=\"cal-title\"><\/h3><div><button class=\"btn btn-line mini\" id=\"cal-prev\" aria-label=\"Previous month\">\u2039 Prev<\/button><button class=\"btn btn-line mini\" id=\"cal-today\">Today<\/button><button class=\"btn btn-line mini\" id=\"cal-next\" aria-label=\"Next month\">Next \u203a<\/button><\/div><\/div>\n<div class=\"pills\" role=\"group\" aria-label=\"Filter calendar\"><button class=\"pill\" data-filter=\"all\" aria-pressed=\"true\">All<\/button><button class=\"pill\" data-filter=\"varsity\" aria-pressed=\"false\">Varsity Practice<\/button><button class=\"pill\" data-filter=\"jv\" aria-pressed=\"false\">JV Practice<\/button><button class=\"pill\" data-filter=\"open\" aria-pressed=\"false\">Open Gym<\/button><button class=\"pill\" data-filter=\"match\" aria-pressed=\"false\">Lynbrook Matches<\/button><\/div>\n<div class=\"table-wrap\"><div class=\"cal\" id=\"cal-grid\"><\/div><\/div>\n<ul class=\"clean\" id=\"cal-notes\" style=\"margin-top:.5rem\"><\/ul>\n<div class=\"legend\" role=\"note\" aria-label=\"Calendar key\"><span><i class=\"swatch\" style=\"background:var(--red);border-color:var(--red)\"><\/i>Varsity Practice<\/span><span><i class=\"swatch\" style=\"background:#3B5BA9;border-color:#3B5BA9\"><\/i>JV Practice<\/span><span><i class=\"swatch\" style=\"background:var(--gold);border-color:var(--gold)\"><\/i>Open Gym<\/span><span><i class=\"swatch lynb\"><\/i>Lynbrook match<\/span><span><i class=\"swatch\" style=\"border-color:var(--gold)\"><\/i>Gold outline = time changed<\/span><\/div>\n<h2 style=\"margin-top:2.5rem\">League Match Schedule<\/h2>\n<p class=\"muted\">SCVAL De Anza Division, 2026\u20132027 (posted 7/21/26). Format is Away @ Home. Dates can change, so confirm at <a href=\"https://www.scval.com/springSports/26-27%20SCVAL%20Bad%20DA%20Schedule%20Finals.pdf\" target=\"_blank\" rel=\"noopener\">scval.com<\/a>.<\/p>\n<div class=\"legend\" role=\"note\" aria-label=\"Legend\"><span><i class=\"swatch lynb\"><\/i><strong>Highlighted = official Lynbrook Vikings game<\/strong><\/span><span><i class=\"swatch senior\"><\/i><strong>\ud83c\udf93 Senior Night<\/strong> (final home game)<\/span><span><i class=\"swatch\"><\/i>Other league match<\/span><\/div>\n<div class=\"tools\"><input id=\"q\" type=\"search\" placeholder=\"Search a school or date\" aria-label=\"Search matches\"><select id=\"lf\" aria-label=\"Filter matches\"><option value=\"lyn\">Lynbrook only<\/option><option value=\"home\">Lynbrook home<\/option><option value=\"away\">Lynbrook away<\/option><option value=\"all\">All league matches<\/option><\/select><\/div>\n<div class=\"table-wrap\"><table><thead><tr><th>Date<\/th><th>Time<\/th><th>Away<\/th><th>Home<\/th><\/tr><\/thead><tbody id=\"matches\"><\/tbody><\/table><\/div>\n<p class=\"muted\" style=\"margin-top:.75rem\">Matches start at 5:00 PM unless a coach changes the time. No contests are scheduled Tuesday, April 13. League play on Thu 4/29 and Fri 4/30 and League Finals on Sat 5/1 are at Fremont.<\/p><\/main>", "attendance": "<section class=\"page-head\"><div class=\"wrap\"><h1>Attendance Check-In<\/h1><p>Enter your Student ID. Your details fill in automatically.<\/p><\/div><\/section>\n<main class=\"wrap section\"><div class=\"card\" style=\"max-width:560px;margin:0 auto\"><h2>Check In<\/h2>\n<form id=\"checkin\" novalidate><label for=\"who\">Student ID Number<\/label><input id=\"who\" inputmode=\"numeric\" autocomplete=\"off\" required>\n<p id=\"idnote\" class=\"muted\" style=\"margin-top:.3rem\" aria-live=\"polite\"><\/p>\n<label for=\"pfirst\">First Name<\/label><input id=\"pfirst\" readonly tabindex=\"-1\" placeholder=\"Fills in from your ID\"><label for=\"plast\">Last Name<\/label><input id=\"plast\" readonly tabindex=\"-1\" placeholder=\"Fills in from your ID\">\n<label for=\"pgender\">Gender<\/label><input id=\"pgender\" readonly tabindex=\"-1\" placeholder=\"Fills in from your ID\"><label for=\"pdiv\">Division<\/label><input id=\"pdiv\" readonly tabindex=\"-1\" placeholder=\"Fills in from your ID\">\n<label for=\"date\">Date<\/label><input id=\"date\" type=\"date\" required><label for=\"type\">Session you attended<\/label><select id=\"type\"><option value=\"varsity\">Varsity Practice<\/option><option value=\"jv\">JV Practice<\/option><option value=\"open\">Saturday Open Gym<\/option><\/select>\n<p class=\"muted\" id=\"sess-note\" style=\"margin-top:.3rem\" aria-live=\"polite\"><\/p>\n<button class=\"btn btn-red\" style=\"margin-top:1.25rem\">Check In<\/button><\/form><div id=\"feedback\" role=\"status\" aria-live=\"polite\"><\/div><\/div><\/main>", "portal": "<section class=\"page-head\"><div class=\"wrap\"><h1>Player Portal<\/h1><p>Sign in with your Student ID to see your next game position, attendance and clearance.<\/p><\/div><\/section>\n<main class=\"wrap section\"><div class=\"auth card\" id=\"auth\"><div class=\"tabs\"><button class=\"pill\" data-tab=\"login\" aria-pressed=\"true\">Log in<\/button><button class=\"pill\" data-tab=\"reg\" aria-pressed=\"false\">Register<\/button><\/div>\n<form id=\"login-form\" novalidate><label for=\"li-id\">Student ID<\/label><input id=\"li-id\" inputmode=\"numeric\" autocomplete=\"username\"><p class=\"muted\" id=\"li-note\" style=\"margin-top:.3rem\" aria-live=\"polite\"><\/p><label for=\"li-pw\">Password<\/label><input id=\"li-pw\" type=\"password\" autocomplete=\"current-password\"><button class=\"btn btn-red\" style=\"margin-top:1rem\">Log in<\/button><\/form>\n<form id=\"reg-form\" novalidate hidden><p class=\"muted\">Your Student ID must already be on the team roster. Ask your coach if it isn\u2019t.<\/p><label for=\"rg-id\">Student ID<\/label><input id=\"rg-id\" inputmode=\"numeric\" autocomplete=\"username\"><p class=\"muted\" id=\"rg-note\" style=\"margin-top:.3rem\" aria-live=\"polite\"><\/p>\n<label for=\"rg-first\">First Name<\/label><input id=\"rg-first\" readonly tabindex=\"-1\" placeholder=\"Fills in from your ID\"><label for=\"rg-last\">Last Name<\/label><input id=\"rg-last\" readonly tabindex=\"-1\" placeholder=\"Fills in from your ID\"><label for=\"rg-pw\">Choose a password<\/label><input id=\"rg-pw\" type=\"password\" autocomplete=\"new-password\"><button class=\"btn btn-red\" style=\"margin-top:1rem\">Create account<\/button><\/form>\n<div id=\"auth-msg\"><\/div><\/div><div id=\"dash\" hidden><\/div><\/main>", "admin": "<section class=\"page-head\"><div class=\"wrap\"><h1>Coach Admin<\/h1><p>Everything you manage, in one place.<\/p><\/div><\/section>\n<main class=\"wrap section\">\n<div class=\"card auth\" id=\"gate\" hidden><h2>Coach access<\/h2><form id=\"gate-form\" novalidate><label for=\"code\">Admin code<\/label><input id=\"code\" type=\"password\" autocomplete=\"current-password\"><button class=\"btn btn-red\" style=\"margin-top:1rem\">Unlock<\/button><\/form><div id=\"gate-msg\"><\/div><\/div>\n<div class=\"card auth\" id=\"setup\" hidden><h2>Set your admin code<\/h2><p class=\"muted\">First-time setup. Choose a code only coaches know, and do this before you share the site.<\/p><form id=\"setup-form\" novalidate><label for=\"su-code\">New admin code<\/label><input id=\"su-code\" type=\"password\" autocomplete=\"new-password\"><label for=\"su-code2\">Confirm code<\/label><input id=\"su-code2\" type=\"password\" autocomplete=\"new-password\"><button class=\"btn btn-red\" style=\"margin-top:1rem\">Save and unlock<\/button><\/form><div id=\"setup-msg\"><\/div><\/div>\n<div id=\"panel\" hidden>\n<div class=\"tabs\" role=\"group\" aria-label=\"Admin sections\"><button class=\"pill\" data-at=\"roster\" aria-pressed=\"true\">Roster<\/button><button class=\"pill\" data-at=\"attendance\" aria-pressed=\"false\">Attendance<\/button><button class=\"pill\" data-at=\"schedule\" aria-pressed=\"false\">Schedule<\/button><button class=\"pill\" data-at=\"lineups\" aria-pressed=\"false\">Line-ups<\/button><button class=\"pill\" data-at=\"clearance\" aria-pressed=\"false\">Clearance<\/button><button class=\"pill\" data-at=\"news\" aria-pressed=\"false\">Announcements<\/button><\/div>\n\n<section data-pane=\"roster\">\n<div class=\"card\"><h2>Master roster<\/h2>\n<form id=\"p-form\" class=\"grid\" novalidate>\n<div><label for=\"p-id\">Student ID<\/label><input id=\"p-id\" inputmode=\"numeric\"><\/div><div><label for=\"p-first\">First Name<\/label><input id=\"p-first\"><\/div><div><label for=\"p-last\">Last Name<\/label><input id=\"p-last\"><\/div>\n<div><label for=\"p-gender\">Gender<\/label><select id=\"p-gender\"><option value=\"\">Select<\/option><option>Male<\/option><option>Female<\/option><\/select><\/div>\n<div><label for=\"p-div\">Division<\/label><select id=\"p-div\"><option>Varsity<\/option><option>JV<\/option><\/select><\/div>\n<div><label for=\"p-grade\">Grade<\/label><select id=\"p-grade\"><option>9<\/option><option>10<\/option><option>11<\/option><option>12<\/option><\/select><\/div>\n<div style=\"align-self:end\"><button class=\"btn btn-red\" id=\"p-save\" style=\"margin:0\">Add player<\/button><button type=\"button\" class=\"btn btn-line\" id=\"p-cancel\" hidden>Cancel<\/button><\/div><\/form>\n<div class=\"tools\" style=\"margin-top:1rem\"><input id=\"p-q\" type=\"search\" placeholder=\"Search roster\" aria-label=\"Search roster\"><button type=\"button\" class=\"btn btn-line\" id=\"p-sample\" style=\"margin:0\">Load sample players (testing)<\/button><\/div>\n<p class=\"muted\" id=\"p-count\"><\/p><div class=\"table-wrap\"><table><thead><tr><th>ID<\/th><th>First Name<\/th><th>Last Name<\/th><th>Gender<\/th><th>Division<\/th><th>Grade<\/th><th><\/th><\/tr><\/thead><tbody id=\"p-body\"><\/tbody><\/table><\/div><\/div>\n<\/section>\n\n<section data-pane=\"attendance\" hidden>\n<div class=\"tabs subtabs\" data-group=\"att\"><button class=\"pill\" data-s=\"take\" aria-pressed=\"true\">Take attendance<\/button><button class=\"pill\" data-s=\"log\" aria-pressed=\"false\">Log &amp; edits<\/button><\/div>\n<div class=\"card\" data-sg=\"att\" data-s=\"take\"><h2>Take attendance<\/h2>\n<div class=\"tools\"><select id=\"a-pick\" aria-label=\"Jump to a recent session\"><\/select><input id=\"a-date\" type=\"date\" aria-label=\"Date\"><select id=\"a-type\" aria-label=\"Session type\"><option value=\"varsity\">Varsity Practice<\/option><option value=\"jv\">JV Practice<\/option><option value=\"open\">Saturday Open Gym<\/option><\/select><select id=\"a-div\" aria-label=\"Division\"><option value=\"all\">All divisions<\/option><option>Varsity<\/option><option>JV<\/option><\/select><\/div>\n<p class=\"muted\" id=\"a-sum\"><\/p><div class=\"tools\"><button type=\"button\" class=\"btn btn-line\" id=\"a-all\" style=\"margin:0\">Mark everyone shown Present<\/button><\/div>\n<div class=\"table-wrap\"><table><thead><tr><th>ID<\/th><th>First Name<\/th><th>Last Name<\/th><th>Div<\/th><th>Status (tap again to clear)<\/th><\/tr><\/thead><tbody id=\"a-body\"><\/tbody><\/table><\/div><\/div>\n<div class=\"card\" data-sg=\"att\" data-s=\"log\"><h2>Attendance log<\/h2><p class=\"muted\">Edit status, date or session right in the table, delete a wrong entry, or add a missed one.<\/p>\n<form id=\"l-form\" class=\"tools\" novalidate><select id=\"l-player\" aria-label=\"Player\"><\/select><input id=\"l-date\" type=\"date\" aria-label=\"Date\"><select id=\"l-type\" aria-label=\"Session\"><option value=\"varsity\">Varsity Practice<\/option><option value=\"jv\">JV Practice<\/option><option value=\"open\">Saturday Open Gym<\/option><\/select><select id=\"l-st\" aria-label=\"Status\"><option value=\"present\">Present<\/option><option value=\"excused\">Excused Absent<\/option><option value=\"unexcused\">Unexcused Absent<\/option><\/select><button class=\"btn btn-red\" style=\"margin:0\">Add log<\/button><\/form>\n<div class=\"tools\"><input id=\"h-q\" type=\"search\" placeholder=\"Filter: player name or ID\" aria-label=\"Filter by player\"><input id=\"h-date\" type=\"date\" aria-label=\"Filter by date\"><select id=\"h-type\" aria-label=\"Filter by session\"><option value=\"all\">All sessions<\/option><option value=\"varsity\">Varsity Practice<\/option><option value=\"jv\">JV Practice<\/option><option value=\"open\">Saturday Open Gym<\/option><\/select><select id=\"h-st\" aria-label=\"Filter by status\"><option value=\"all\">All statuses<\/option><option value=\"present\">Present<\/option><option value=\"excused\">Excused Absent<\/option><option value=\"unexcused\">Unexcused Absent<\/option><\/select><button type=\"button\" class=\"btn btn-line\" id=\"h-clear\" style=\"margin:0\">Clear<\/button><button class=\"btn btn-gold\" id=\"csv\" style=\"margin:0\">Download CSV<\/button><\/div>\n<p class=\"muted\" id=\"h-count\"><\/p><div class=\"table-wrap\"><table class=\"log\"><thead><tr><th>ID<\/th><th>First Name<\/th><th>Last Name<\/th><th>Date<\/th><th>Session<\/th><th>Status<\/th><th><\/th><\/tr><\/thead><tbody id=\"h-body\"><\/tbody><\/table><\/div><\/div>\n<\/section>\n\n<section data-pane=\"schedule\" hidden>\n<div class=\"tabs subtabs\" data-group=\"sched\"><button class=\"pill\" data-s=\"sessions\" aria-pressed=\"true\">Practices &amp; open gym<\/button><button class=\"pill\" data-s=\"matches\" aria-pressed=\"false\">League matches<\/button><\/div>\n<div class=\"card\" data-sg=\"sched\" data-s=\"sessions\"><h2>Practices &amp; open gym<\/h2><p class=\"muted\" id=\"def-times\"><\/p>\n<form id=\"o-form\" class=\"grid\" novalidate>\n<div><label for=\"o-date\">Date<\/label><input id=\"o-date\" type=\"date\"><\/div><div><label for=\"o-type\">Session<\/label><select id=\"o-type\"><option value=\"varsity\">Varsity Practice<\/option><option value=\"jv\">JV Practice<\/option><option value=\"open\">Saturday Open Gym<\/option><\/select><\/div>\n<div><label for=\"o-start\">Start<\/label><input id=\"o-start\" type=\"time\"><\/div><div><label for=\"o-end\">End<\/label><input id=\"o-end\" type=\"time\"><\/div>\n<div><label for=\"o-until\">Repeat weekly until (optional)<\/label><input id=\"o-until\" type=\"date\"><\/div><div><label for=\"o-note\">Note (optional)<\/label><input id=\"o-note\"><\/div>\n<div style=\"align-self:end\"><label class=\"inline\"><input type=\"checkbox\" id=\"o-cancel\"> Cancel this session<\/label><\/div>\n<div style=\"align-self:end\"><button class=\"btn btn-red\" style=\"margin:0\">Save<\/button><\/div><\/form>\n<p class=\"muted\" id=\"o-hint\" style=\"margin-top:.5rem\"><\/p><h3 style=\"margin-top:1rem\">Upcoming added &amp; changed sessions<\/h3><ul class=\"clean\" id=\"o-list\"><\/ul><\/div>\n<div class=\"card\" data-sg=\"sched\" data-s=\"matches\"><h2>League matches<\/h2><p class=\"muted\">Starts with the official SCVAL schedule. Edit anything in the table, or add and delete matches.<\/p>\n<div class=\"tools\"><select id=\"mm-filter\" aria-label=\"Show\"><option value=\"lyn\">Lynbrook only<\/option><option value=\"all\">All league matches<\/option><\/select><button type=\"button\" class=\"btn btn-line\" id=\"mm-reset\" style=\"margin:0\">Reset to official SCVAL schedule<\/button><\/div>\n<p class=\"muted\" style=\"margin-top:.75rem\">Add a match:<\/p><form id=\"mm-form\" class=\"tools\" novalidate><input id=\"mm-date\" type=\"date\" aria-label=\"Date\"><input id=\"mm-time\" value=\"5:00 PM\" aria-label=\"Time\"><select id=\"mm-away\" aria-label=\"Away team\"><\/select><select id=\"mm-home\" aria-label=\"Home team\"><\/select><button class=\"btn btn-red\" style=\"margin:0\">Add match<\/button><\/form>\n<p class=\"muted\">Add another event (finals, tournament):<\/p><form id=\"me-form\" class=\"tools\" novalidate><input id=\"me-date\" type=\"date\" aria-label=\"Event date\"><input id=\"me-time\" placeholder=\"Time\" aria-label=\"Event time\"><input id=\"me-text\" placeholder=\"e.g. League Finals @ Fremont\" aria-label=\"Event\"><button class=\"btn btn-line\" style=\"margin:0\">Add event<\/button><\/form>\n<div class=\"table-wrap\"><table class=\"log\"><thead><tr><th>Date<\/th><th>Time<\/th><th>Away<\/th><th>Home<\/th><th><\/th><\/tr><\/thead><tbody id=\"mm-body\"><\/tbody><\/table><\/div><\/div>\n<\/section>\n\n<section data-pane=\"lineups\" hidden>\n<div class=\"card\"><h2>Game line-ups<\/h2>\n<div class=\"tools\"><select id=\"lu-match\" aria-label=\"Match\"><\/select><button class=\"pill\" data-b=\"V\" aria-pressed=\"true\">Varsity<\/button><button class=\"pill\" data-b=\"J\" aria-pressed=\"false\">JV<\/button><button class=\"btn btn-line\" id=\"lu-clear\" style=\"margin:0\">Clear this block<\/button><\/div>\n<p class=\"muted\">Ranks 1\u20133 for BS, GS, BD, GD and MXD. Each dropdown lists the matching division and gender first. Players see their spot in the Portal right away.<\/p><div id=\"lu-box\"><\/div><\/div>\n<\/section>\n\n<section data-pane=\"clearance\" hidden>\n<div class=\"tabs subtabs\" data-group=\"clr\"><button class=\"pill\" data-s=\"list\" aria-pressed=\"true\">Checklist<\/button><button class=\"pill\" data-s=\"players\" aria-pressed=\"false\">Players<\/button><\/div>\n<div class=\"card\" data-sg=\"clr\" data-s=\"list\"><h2>Clearance checklist<\/h2><p class=\"muted\">What every player sees in the Portal. Edit the wording, reorder, add or delete.<\/p>\n<form id=\"ck-form\" class=\"tools\" novalidate><input id=\"ck-label\" placeholder=\"New checklist item\" aria-label=\"New checklist item\"><button class=\"btn btn-red\" style=\"margin:0\">Add item<\/button><\/form><ul class=\"clean\" id=\"ck-list\"><\/ul><\/div>\n<div class=\"card\" data-sg=\"clr\" data-s=\"players\"><h2>Player clearance<\/h2>\n<div class=\"tools\"><select id=\"pc-player\" aria-label=\"Player\"><\/select><button type=\"button\" class=\"btn btn-line\" id=\"pc-all\" style=\"margin:0\">Mark all done<\/button><button type=\"button\" class=\"btn btn-line\" id=\"pc-none\" style=\"margin:0\">Clear all<\/button><\/div>\n<div id=\"pc-list\"><\/div><h3 style=\"margin-top:1.25rem\">Everyone<\/h3><div class=\"table-wrap\"><table><thead><tr><th>First Name<\/th><th>Last Name<\/th><th>Division<\/th><th>Progress<\/th><th><\/th><\/tr><\/thead><tbody id=\"pc-body\"><\/tbody><\/table><\/div><\/div>\n<\/section>\n\n<section data-pane=\"news\" hidden>\n<div class=\"card\"><h2>Home page announcements<\/h2><p class=\"muted\">Shown on the home page. Players see a NEW tag until they open one.<\/p>\n<form id=\"an-form\" novalidate><label for=\"an-title\">Title<\/label><input id=\"an-title\"><label for=\"an-body\">Details<\/label><textarea id=\"an-body\" rows=\"3\"><\/textarea>\n<button class=\"btn btn-red\" id=\"an-save\" style=\"margin-top:1rem\">Post announcement<\/button><button type=\"button\" class=\"btn btn-line\" id=\"an-cancel\" hidden>Cancel<\/button><\/form><ul class=\"clean\" id=\"an-list\" style=\"margin-top:1rem\"><\/ul><\/div>\n<\/section>\n\n<p style=\"margin-top:.5rem\"><button class=\"btn btn-line\" id=\"logout-admin\">Lock admin<\/button><\/p><\/div><\/main>"};
+async function route() {
+  const n = location.hash.slice(1); cur = VIEWS[n] ? n : 'home';
+  updaters.clear(); Object.keys(subs).forEach(k => { subs[k]?.(); delete subs[k]; }); Object.keys(cache).forEach(k => delete cache[k]);
+  $('#view').innerHTML = VIEWS[cur]; document.body.dataset.page = cur === 'home' ? 'index' : cur; window.scrollTo(0, 0);
+  eyes(); layout(); banner('Connecting…');
+  try { await restoreSession(); if (curUser) layout(); await ({ home, schedule, attendance, portal, admin })[cur](); } catch (e) { console.error(e); banner(dbMsg(e), 'err'); }
+  banner('');
+}
+window.addEventListener('hashchange', route); route();
+</script></body></html>
