@@ -268,7 +268,7 @@ function layout() {
     <details><summary>Are there team fees?</summary><p>No. Donations for fppd and events are strongly accepted.</p></details>
     <details><summary>Who can come to Open Gyms?</summary><p>During off season, any players are allowed to play in open gym.</p></details>
     <p style="margin-top:.8rem">Questions? Email <a href="mailto:lynbrookb.official@gmail.com">lynbrookb.official@gmail.com</a></p></div>
-    <p>&copy; Lynbrook Badminton Club · San Jose, CA</p><p>Follow us on <a href="@lhs_badminton">Instagram</a> | Join our <a href="#">Discord</a></p></div></footer>`;
+    <p>&copy; Lynbrook Badminton Club · San Jose, CA</p><p>Follow us on <a href="https://www.instagram.com/lhs_badminton/">Instagram</a> | Join our <a href="#">Discord</a></p></div></footer>`;
 }
 
 /* ---------- line-up helpers ---------- */
