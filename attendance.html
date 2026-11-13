@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Check-In | Lynbrook Badminton</title><link rel="stylesheet" href="style.css"></head>
+<body data-page="attendance"><div id="site-header"></div>
+<section class="page-head"><div class="wrap"><h1>Attendance Check-In</h1><p>Enter your Student ID. Your details fill in automatically.</p></div></section>
+<main class="wrap section"><div class="card" style="max-width:560px;margin:0 auto"><h2>Check In</h2>
+<form id="checkin" novalidate><label for="who">Student ID Number</label><input id="who" inputmode="numeric" autocomplete="off" required>
+<p id="idnote" class="muted" style="margin-top:.3rem" aria-live="polite"></p>
+<label for="pfirst">First Name</label><input id="pfirst" readonly tabindex="-1" placeholder="Fills in from your ID"><label for="plast">Last Name</label><input id="plast" readonly tabindex="-1" placeholder="Fills in from your ID">
+<label for="pgender">Gender</label><input id="pgender" readonly tabindex="-1" placeholder="Fills in from your ID"><label for="pdiv">Division</label><input id="pdiv" readonly tabindex="-1" placeholder="Fills in from your ID">
+<label for="date">Date</label><input id="date" type="date" required><label for="type">Session you attended</label><select id="type"><option value="varsity">Varsity Practice</option><option value="jv">JV Practice</option><option value="open">Saturday Open Gym</option></select>
+<p class="muted" id="sess-note" style="margin-top:.3rem" aria-live="polite"></p>
+<button class="btn btn-red" style="margin-top:1.25rem">Check In</button></form><div id="feedback" role="status" aria-live="polite"></div></div></main>
+<div id="site-footer"></div><script type="module" src="script.js"></script></body></html>

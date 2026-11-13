@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Schedule | Lynbrook Badminton</title><link rel="stylesheet" href="style.css"></head>
+<body data-page="schedule"><div id="site-header"></div>
+<section class="page-head"><div class="wrap"><h1>Schedule</h1><p>Open gym, practices and league matches.</p></div></section>
+<main class="wrap section"><h2>Open Gym &amp; Practices</h2>
+<div class="grid" id="defaults"></div>
+<p class="muted" style="margin-top:.75rem">Varsity and JV practices show up on the calendar when coaches schedule them. Coaches can also change the time of any day. Non-marking indoor shoes are required for Open Gym.</p>
+<div class="cal-bar"><h3 id="cal-title"></h3><div><button class="btn btn-line mini" id="cal-prev" aria-label="Previous month">‹ Prev</button><button class="btn btn-line mini" id="cal-today">Today</button><button class="btn btn-line mini" id="cal-next" aria-label="Next month">Next ›</button></div></div>
+<div class="pills" role="group" aria-label="Filter calendar"><button class="pill" data-filter="all" aria-pressed="true">All</button><button class="pill" data-filter="varsity" aria-pressed="false">Varsity Practice</button><button class="pill" data-filter="jv" aria-pressed="false">JV Practice</button><button class="pill" data-filter="open" aria-pressed="false">Open Gym</button><button class="pill" data-filter="match" aria-pressed="false">Lynbrook Matches</button></div>
+<div class="table-wrap"><div class="cal" id="cal-grid"></div></div>
+<ul class="clean" id="cal-notes" style="margin-top:.5rem"></ul>
+<div class="legend" role="note" aria-label="Calendar key"><span><i class="swatch" style="background:var(--red);border-color:var(--red)"></i>Varsity Practice</span><span><i class="swatch" style="background:#3B5BA9;border-color:#3B5BA9"></i>JV Practice</span><span><i class="swatch" style="background:var(--gold);border-color:var(--gold)"></i>Open Gym</span><span><i class="swatch lynb"></i>Lynbrook match</span><span><i class="swatch" style="border-color:var(--gold)"></i>Gold outline = time changed</span></div>
+<h2 style="margin-top:2.5rem">League Match Schedule</h2>
+<p class="muted">SCVAL De Anza Division, 2026–2027 (posted 7/21/26). Format is Away @ Home. Dates can change, so confirm at <a href="https://www.scval.com/springSports/26-27%20SCVAL%20Bad%20DA%20Schedule%20Finals.pdf" target="_blank" rel="noopener">scval.com</a>.</p>
+<div class="legend" role="note" aria-label="Legend"><span><i class="swatch lynb"></i><strong>Highlighted = official Lynbrook Vikings game</strong></span><span><i class="swatch senior"></i><strong>🎓 Senior Night</strong> (final home game)</span><span><i class="swatch"></i>Other league match</span></div>
+<div class="tools"><input id="q" type="search" placeholder="Search a school or date" aria-label="Search matches"><select id="lf" aria-label="Filter matches"><option value="lyn">Lynbrook only</option><option value="home">Lynbrook home</option><option value="away">Lynbrook away</option><option value="all">All league matches</option></select></div>
+<div class="table-wrap"><table><thead><tr><th>Date</th><th>Time</th><th>Away</th><th>Home</th></tr></thead><tbody id="matches"></tbody></table></div>
+<p class="muted" style="margin-top:.75rem">Matches start at 5:00 PM unless a coach changes the time. No contests are scheduled Tuesday, April 13. League play on Thu 4/29 and Fri 4/30 and League Finals on Sat 5/1 are at Fremont.</p></main>
+<div id="site-footer"></div><script type="module" src="script.js"></script></body></html>

@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Portal | Lynbrook Badminton</title><link rel="stylesheet" href="style.css"></head>
+<body data-page="portal"><div id="site-header"></div>
+<section class="page-head"><div class="wrap"><h1>Player Portal</h1><p>Sign in with your Student ID to see your next game position, attendance and clearance.</p></div></section>
+<main class="wrap section"><div class="auth card" id="auth"><div class="tabs"><button class="pill" data-tab="login" aria-pressed="true">Log in</button><button class="pill" data-tab="reg" aria-pressed="false">Register</button></div>
+<form id="login-form" novalidate><label for="li-id">Student ID</label><input id="li-id" inputmode="numeric" autocomplete="username"><p class="muted" id="li-note" style="margin-top:.3rem" aria-live="polite"></p><label for="li-pw">Password</label><input id="li-pw" type="password" autocomplete="current-password"><button class="btn btn-red" style="margin-top:1rem">Log in</button></form>
+<form id="reg-form" novalidate hidden><p class="muted">Your Student ID must already be on the team roster. Ask your coach if it isn’t.</p><label for="rg-id">Student ID</label><input id="rg-id" inputmode="numeric" autocomplete="username"><p class="muted" id="rg-note" style="margin-top:.3rem" aria-live="polite"></p>
+<label for="rg-first">First Name</label><input id="rg-first" readonly tabindex="-1" placeholder="Fills in from your ID"><label for="rg-last">Last Name</label><input id="rg-last" readonly tabindex="-1" placeholder="Fills in from your ID"><label for="rg-pw">Choose a password</label><input id="rg-pw" type="password" autocomplete="new-password"><button class="btn btn-red" style="margin-top:1rem">Create account</button></form>
+<div id="auth-msg"></div></div><div id="dash" hidden></div></main>
+<div id="site-footer"></div><script type="module" src="script.js"></script></body></html>

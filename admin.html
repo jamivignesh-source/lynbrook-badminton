@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin | Lynbrook Badminton</title><link rel="stylesheet" href="style.css"></head>
+<body data-page="admin"><div id="site-header"></div>
+<section class="page-head"><div class="wrap"><h1>Coach Admin</h1><p>Everything you manage, in one place.</p></div></section>
+<main class="wrap section">
+<div class="card auth" id="gate" hidden><h2>Coach access</h2><form id="gate-form" novalidate><label for="code">Admin code</label><input id="code" type="password" autocomplete="current-password"><button class="btn btn-red" style="margin-top:1rem">Unlock</button></form><div id="gate-msg"></div></div>
+<div class="card auth" id="setup" hidden><h2>Set your admin code</h2><p class="muted">First-time setup. Choose a code only coaches know, and do this before you share the site.</p><form id="setup-form" novalidate><label for="su-code">New admin code</label><input id="su-code" type="password" autocomplete="new-password"><label for="su-code2">Confirm code</label><input id="su-code2" type="password" autocomplete="new-password"><button class="btn btn-red" style="margin-top:1rem">Save and unlock</button></form><div id="setup-msg"></div></div>
+<div id="panel" hidden>
+<div class="tabs" role="group" aria-label="Admin sections"><button class="pill" data-at="roster" aria-pressed="true">Roster</button><button class="pill" data-at="attendance" aria-pressed="false">Attendance</button><button class="pill" data-at="schedule" aria-pressed="false">Schedule</button><button class="pill" data-at="lineups" aria-pressed="false">Line-ups</button><button class="pill" data-at="clearance" aria-pressed="false">Clearance</button><button class="pill" data-at="news" aria-pressed="false">Announcements</button></div>
+
+<section data-pane="roster">
+<div class="card"><h2>Master roster</h2>
+<form id="p-form" class="grid" novalidate>
+<div><label for="p-id">Student ID</label><input id="p-id" inputmode="numeric"></div><div><label for="p-first">First Name</label><input id="p-first"></div><div><label for="p-last">Last Name</label><input id="p-last"></div>
+<div><label for="p-gender">Gender</label><select id="p-gender"><option value="">Select</option><option>Male</option><option>Female</option></select></div>
+<div><label for="p-div">Division</label><select id="p-div"><option>Varsity</option><option>JV</option></select></div>
+<div><label for="p-grade">Grade</label><select id="p-grade"><option>9</option><option>10</option><option>11</option><option>12</option></select></div>
+<div style="align-self:end"><button class="btn btn-red" id="p-save" style="margin:0">Add player</button><button type="button" class="btn btn-line" id="p-cancel" hidden>Cancel</button></div></form>
+<div class="tools" style="margin-top:1rem"><input id="p-q" type="search" placeholder="Search roster" aria-label="Search roster"><button type="button" class="btn btn-line" id="p-sample" style="margin:0">Load sample players (testing)</button></div>
+<p class="muted" id="p-count"></p><div class="table-wrap"><table><thead><tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Gender</th><th>Division</th><th>Grade</th><th></th></tr></thead><tbody id="p-body"></tbody></table></div></div>
+</section>
+
+<section data-pane="attendance" hidden>
+<div class="tabs subtabs" data-group="att"><button class="pill" data-s="take" aria-pressed="true">Take attendance</button><button class="pill" data-s="log" aria-pressed="false">Log &amp; edits</button></div>
+<div class="card" data-sg="att" data-s="take"><h2>Take attendance</h2>
+<div class="tools"><select id="a-pick" aria-label="Jump to a recent session"></select><input id="a-date" type="date" aria-label="Date"><select id="a-type" aria-label="Session type"><option value="varsity">Varsity Practice</option><option value="jv">JV Practice</option><option value="open">Saturday Open Gym</option></select><select id="a-div" aria-label="Division"><option value="all">All divisions</option><option>Varsity</option><option>JV</option></select></div>
+<p class="muted" id="a-sum"></p><div class="tools"><button type="button" class="btn btn-line" id="a-all" style="margin:0">Mark everyone shown Present</button></div>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Div</th><th>Status (tap again to clear)</th></tr></thead><tbody id="a-body"></tbody></table></div></div>
+<div class="card" data-sg="att" data-s="log"><h2>Attendance log</h2><p class="muted">Edit status, date or session right in the table, delete a wrong entry, or add a missed one.</p>
+<form id="l-form" class="tools" novalidate><select id="l-player" aria-label="Player"></select><input id="l-date" type="date" aria-label="Date"><select id="l-type" aria-label="Session"><option value="varsity">Varsity Practice</option><option value="jv">JV Practice</option><option value="open">Saturday Open Gym</option></select><select id="l-st" aria-label="Status"><option value="present">Present</option><option value="excused">Excused Absent</option><option value="unexcused">Unexcused Absent</option></select><button class="btn btn-red" style="margin:0">Add log</button></form>
+<div class="tools"><input id="h-q" type="search" placeholder="Filter: player name or ID" aria-label="Filter by player"><input id="h-date" type="date" aria-label="Filter by date"><select id="h-type" aria-label="Filter by session"><option value="all">All sessions</option><option value="varsity">Varsity Practice</option><option value="jv">JV Practice</option><option value="open">Saturday Open Gym</option></select><select id="h-st" aria-label="Filter by status"><option value="all">All statuses</option><option value="present">Present</option><option value="excused">Excused Absent</option><option value="unexcused">Unexcused Absent</option></select><button type="button" class="btn btn-line" id="h-clear" style="margin:0">Clear</button><button class="btn btn-gold" id="csv" style="margin:0">Download CSV</button></div>
+<p class="muted" id="h-count"></p><div class="table-wrap"><table class="log"><thead><tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Date</th><th>Session</th><th>Status</th><th></th></tr></thead><tbody id="h-body"></tbody></table></div></div>
+</section>
+
+<section data-pane="schedule" hidden>
+<div class="tabs subtabs" data-group="sched"><button class="pill" data-s="sessions" aria-pressed="true">Practices &amp; open gym</button><button class="pill" data-s="matches" aria-pressed="false">League matches</button></div>
+<div class="card" data-sg="sched" data-s="sessions"><h2>Practices &amp; open gym</h2><p class="muted" id="def-times"></p>
+<form id="o-form" class="grid" novalidate>
+<div><label for="o-date">Date</label><input id="o-date" type="date"></div><div><label for="o-type">Session</label><select id="o-type"><option value="varsity">Varsity Practice</option><option value="jv">JV Practice</option><option value="open">Saturday Open Gym</option></select></div>
+<div><label for="o-start">Start</label><input id="o-start" type="time"></div><div><label for="o-end">End</label><input id="o-end" type="time"></div>
+<div><label for="o-until">Repeat weekly until (optional)</label><input id="o-until" type="date"></div><div><label for="o-note">Note (optional)</label><input id="o-note"></div>
+<div style="align-self:end"><label class="inline"><input type="checkbox" id="o-cancel"> Cancel this session</label></div>
+<div style="align-self:end"><button class="btn btn-red" style="margin:0">Save</button></div></form>
+<p class="muted" id="o-hint" style="margin-top:.5rem"></p><h3 style="margin-top:1rem">Upcoming added &amp; changed sessions</h3><ul class="clean" id="o-list"></ul></div>
+<div class="card" data-sg="sched" data-s="matches"><h2>League matches</h2><p class="muted">Starts with the official SCVAL schedule. Edit anything in the table, or add and delete matches.</p>
+<div class="tools"><select id="mm-filter" aria-label="Show"><option value="lyn">Lynbrook only</option><option value="all">All league matches</option></select><button type="button" class="btn btn-line" id="mm-reset" style="margin:0">Reset to official SCVAL schedule</button></div>
+<p class="muted" style="margin-top:.75rem">Add a match:</p><form id="mm-form" class="tools" novalidate><input id="mm-date" type="date" aria-label="Date"><input id="mm-time" value="5:00 PM" aria-label="Time"><select id="mm-away" aria-label="Away team"></select><select id="mm-home" aria-label="Home team"></select><button class="btn btn-red" style="margin:0">Add match</button></form>
+<p class="muted">Add another event (finals, tournament):</p><form id="me-form" class="tools" novalidate><input id="me-date" type="date" aria-label="Event date"><input id="me-time" placeholder="Time" aria-label="Event time"><input id="me-text" placeholder="e.g. League Finals @ Fremont" aria-label="Event"><button class="btn btn-line" style="margin:0">Add event</button></form>
+<div class="table-wrap"><table class="log"><thead><tr><th>Date</th><th>Time</th><th>Away</th><th>Home</th><th></th></tr></thead><tbody id="mm-body"></tbody></table></div></div>
+</section>
+
+<section data-pane="lineups" hidden>
+<div class="card"><h2>Game line-ups</h2>
+<div class="tools"><select id="lu-match" aria-label="Match"></select><button class="pill" data-b="V" aria-pressed="true">Varsity</button><button class="pill" data-b="J" aria-pressed="false">JV</button><button class="btn btn-line" id="lu-clear" style="margin:0">Clear this block</button></div>
+<p class="muted">Ranks 1–3 for BS, GS, BD, GD and MXD. Each dropdown lists the matching division and gender first. Players see their spot in the Portal right away.</p><div id="lu-box"></div></div>
+</section>
+
+<section data-pane="clearance" hidden>
+<div class="tabs subtabs" data-group="clr"><button class="pill" data-s="list" aria-pressed="true">Checklist</button><button class="pill" data-s="players" aria-pressed="false">Players</button></div>
+<div class="card" data-sg="clr" data-s="list"><h2>Clearance checklist</h2><p class="muted">What every player sees in the Portal. Edit the wording, reorder, add or delete.</p>
+<form id="ck-form" class="tools" novalidate><input id="ck-label" placeholder="New checklist item" aria-label="New checklist item"><button class="btn btn-red" style="margin:0">Add item</button></form><ul class="clean" id="ck-list"></ul></div>
+<div class="card" data-sg="clr" data-s="players"><h2>Player clearance</h2>
+<div class="tools"><select id="pc-player" aria-label="Player"></select><button type="button" class="btn btn-line" id="pc-all" style="margin:0">Mark all done</button><button type="button" class="btn btn-line" id="pc-none" style="margin:0">Clear all</button></div>
+<div id="pc-list"></div><h3 style="margin-top:1.25rem">Everyone</h3><div class="table-wrap"><table><thead><tr><th>First Name</th><th>Last Name</th><th>Division</th><th>Progress</th><th></th></tr></thead><tbody id="pc-body"></tbody></table></div></div>
+</section>
+
+<section data-pane="news" hidden>
+<div class="card"><h2>Home page announcements</h2><p class="muted">Shown on the home page. Players see a NEW tag until they open one.</p>
+<form id="an-form" novalidate><label for="an-title">Title</label><input id="an-title"><label for="an-body">Details</label><textarea id="an-body" rows="3"></textarea>
+<button class="btn btn-red" id="an-save" style="margin-top:1rem">Post announcement</button><button type="button" class="btn btn-line" id="an-cancel" hidden>Cancel</button></form><ul class="clean" id="an-list" style="margin-top:1rem"></ul></div>
+</section>
+
+<p style="margin-top:.5rem"><button class="btn btn-line" id="logout-admin">Lock admin</button></p></div></main>
+<div id="site-footer"></div><script type="module" src="script.js"></script></body></html>
