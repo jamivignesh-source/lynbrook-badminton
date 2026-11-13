@@ -263,12 +263,12 @@ function layout() {
   btn.onclick = () => btn.setAttribute('aria-expanded', nav.classList.toggle('open'));
   nav.onclick = e => { if (e.target.closest('a')) { nav.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); } };
   $('#site-footer').innerHTML = `<footer><div class="wrap"><div class="faq"><h3>FAQ &amp; Contact</h3>
-    <details><summary>Do I need experience for Open Gym?</summary><p>No. All skill levels are welcome.</p></details>
-    <details><summary>What shoes do I need?</summary><p>Non-marking indoor shoes are required.</p></details>
-    <details><summary>Are there team fees?</summary><p>No. Donations for shuttlecocks and equipment are optional.</p></details>
-    <details><summary>How do I check in?</summary><p>Open the Check-In page and enter your Student ID. Your details fill in automatically. Pick the session you attended and tap Check In. Your coach can fix any mistakes.</p></details>
-    <p style="margin-top:.8rem">Questions? Email <a href="mailto:badminton@example.com">badminton@example.com</a></p></div>
-    <p>&copy; Lynbrook Badminton Club · San Jose, CA</p><p>Follow us on <a href="#">Instagram</a> | Join our <a href="#">Discord</a></p></div></footer>`;
+    <details><summary>When are tryouts?</summary><p>Tryouts start in mid-February and last two weeks.</p></details>
+    <details><summary>Do seniors need to qualify for Varsity?</summary><p>Yes, the rule states that seniors need to make the Varsity cut.</p></details>
+    <details><summary>Are there team fees?</summary><p>No. Donations for fppd and events are strongly accepted.</p></details>
+    <details><summary>Who can come to Open Gyms?</summary><p>During off season, any players are allowed to play in open gym.</p></details>
+    <p style="margin-top:.8rem">Questions? Email <a href="mailto:lynbrookb.official@gmail.com">lynbrookb.official@gmail.com</a></p></div>
+    <p>&copy; Lynbrook Badminton Club · San Jose, CA</p><p>Follow us on <a href="@lhs_badminton">Instagram</a> | Join our <a href="#">Discord</a></p></div></footer>`;
 }
 
 /* ---------- line-up helpers ---------- */
